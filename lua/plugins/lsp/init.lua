@@ -5,8 +5,7 @@ return {
 	'neovim/nvim-lspconfig',
 	dependencies = {
 		-- Automatically install LSPs and related tools to stdpath for Neovim
-		-- Mason must be loaded before its dependents so we need to set it up here.
-		{ 'mason-org/mason.nvim', opts = {} },
+		'mason-org/mason.nvim',
 		'mason-org/mason-lspconfig.nvim',
 		'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -93,26 +92,38 @@ return {
 		vim.list_extend(ensure_installed, {
 			'stylua', -- Used to format Lua code
 		})
-		require('mason-tool-installer').setup {
-			ensure_installed = ensure_installed,
+		-- Setup Mason first
+		require('mason').setup()
+
+		-- Setup mason-lspconfig
+		-- Disable automatic_enable to avoid compatibility issues
+		local mason_lspconfig = require 'mason-lspconfig'
+		mason_lspconfig.setup {
+			-- Explicitly disable automatic server setup
+			-- We handle this manually via handlers below
+			automatic_installation = false,
 		}
 
-		require('mason-lspconfig').setup {
-			handlers = {
-				function(server_name)
-					local server = servers[server_name] or {}
-					-- This handles overriding only values explicitly passed
-					-- by the server configuration above. Useful when disabling
-					-- certain features of an LSP (for example, turning off formatting for ts_ls)
-					server.capabilities = vim.tbl_deep_extend(
-						'force',
-						{},
-						capabilities,
-						server.capabilities or {}
-					)
-					require('lspconfig')[server_name].setup(server)
-				end,
-			},
+		-- Manually setup LSP servers using handlers
+		mason_lspconfig.setup_handlers {
+			function(server_name)
+				local server = servers[server_name] or {}
+				-- This handles overriding only values explicitly passed
+				-- by the server configuration above. Useful when disabling
+				-- certain features of an LSP (for example, turning off formatting for ts_ls)
+				server.capabilities = vim.tbl_deep_extend(
+					'force',
+					{},
+					capabilities,
+					server.capabilities or {}
+				)
+				require('lspconfig')[server_name].setup(server)
+			end,
+		}
+
+		-- Install tools after LSP handlers are set up
+		require('mason-tool-installer').setup {
+			ensure_installed = ensure_installed,
 		}
 	end,
 }
