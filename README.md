@@ -417,9 +417,12 @@ New to Neovim or want to learn efficient workflows? Check out the
 **[Tutorial Series](docs/tutorial/README.md)**!
 
 **Featured tutorials:**
+- [File Operations](docs/tutorial/03-file-operations.md) - Manage files with
+  Oil.nvim
 - [Multi-File Navigation](docs/tutorial/04-multi-file-navigation.md) - Jump
   between files efficiently
-- More tutorials coming soon based on common questions
+- [Telescope Mastery](docs/tutorial/08-telescope-mastery.md) - Master fuzzy
+  finding
 
 The tutorial series teaches you how to use Neovim efficiently with this
 configuration, covering everything from basic navigation to advanced

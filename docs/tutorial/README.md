@@ -10,8 +10,7 @@ you master Neovim efficiently using this modular configuration.
 1. [**Basic Navigation**](./01-basic-navigation.md) - Essential movement
    commands
 2. [**Editing Basics**](./02-editing-basics.md) - Insert, delete, change text
-3. [**File Operations**](./03-file-operations.md) - Opening, saving, closing
-   files
+3. [**File Operations**](./03-file-operations.md) - Managing files with Oil.nvim
 
 ### Intermediate Level
 
@@ -36,6 +35,7 @@ you master Neovim efficiently using this modular configuration.
 ### This Configuration's Special Features
 
 - **Leader key**: `<Space>`
+- **Oil.nvim**: `-` (file manager), `<Space>-` (floating window)
 - **Telescope**: `<leader>sf` (search files), `<leader>sg` (live grep)
 - **LSP**: `grd` (definition), `grr` (references), `grn` (rename)
 - **Git**: `]c` / `[c` (next/prev change), `<leader>hs` (stage hunk)
