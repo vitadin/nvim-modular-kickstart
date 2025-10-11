@@ -1,3 +1,13 @@
+kickstart-commands	kickstart.txt	/*kickstart-commands*
+kickstart-credits	kickstart.txt	/*kickstart-credits*
+kickstart-customization	kickstart.txt	/*kickstart-customization*
+kickstart-docs	kickstart.txt	/*kickstart-docs*
+kickstart-features	kickstart.txt	/*kickstart-features*
 kickstart-is	kickstart.txt	/*kickstart-is*
 kickstart-is-not	kickstart.txt	/*kickstart-is-not*
+kickstart-keymaps	kickstart.txt	/*kickstart-keymaps*
+kickstart-license	kickstart.txt	/*kickstart-license*
+kickstart-quality	kickstart.txt	/*kickstart-quality*
+kickstart-structure	kickstart.txt	/*kickstart-structure*
+kickstart-testing	kickstart.txt	/*kickstart-testing*
 kickstart.nvim	kickstart.txt	/*kickstart.nvim*

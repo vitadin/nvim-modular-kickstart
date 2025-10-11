@@ -1,24 +1,219 @@
 ================================================================================
-INTRODUCTION                                                  *kickstart.nvim*
+MODULAR KICKSTART.NVIM                                        *kickstart.nvim*
 
-Kickstart.nvim is a project to help you get started on your neovim journey.
+A well-structured, modular Neovim configuration adapted from the excellent
+kickstart.nvim project.
 
                                                             *kickstart-is-not*
-It is not:
-- Complete framework for every plugin under the sun
-- Place to add every plugin that could ever be useful
+It is not:~
+- A complete framework for every plugin under the sun
+- A place to add every plugin that could ever be useful
+- The original single-file kickstart.nvim
 
                                                                 *kickstart-is*
-It is:
-- Somewhere that has a good start for the most common "IDE" type features:
-    - autocompletion
-    - goto-definition
-    - find references
-    - fuzzy finding
-    - and hinting at what more can be done :)
-- A place to _kickstart_ your journey.
-    - You should fork this project and use/modify it so that it matches your
-      style and preferences. If you don't want to do that, there are probably
-      other projects that would fit much better for you (and that's great!)!
+It is:~
+- A modular, well-organized foundation for your Neovim configuration
+- Professional tooling with Makefile for format/lint/test
+- Easy to customize and maintain
+- A place to kickstart your journey with better structure
 
+================================================================================
+FEATURES                                                  *kickstart-features*
+
+Core Functionality:~
+  • LSP Integration - Built-in language server support via Mason
+  • Fuzzy Finding - Telescope for files, grep, diagnostics
+  • Syntax Highlighting - Tree-sitter for superior code highlighting
+  • Git Integration - Gitsigns for inline git decorations
+  • Auto-completion - Blink.cmp with snippet support
+  • Auto-formatting - Conform.nvim with format-on-save
+
+Development Tooling:~
+  • Makefile - Professional build automation
+    - `make check` - Run formatting and linting
+    - `make format-fix` - Auto-format all files
+    - `make lint` - Lint with luacheck
+    - `make test` - Validate Lua syntax
+
+================================================================================
+STRUCTURE                                               *kickstart-structure*
+
+Configuration is organized into logical modules:
+
+  ~/.config/nvim/
+  ├── init.lua              Minimal entry point (40 lines)
+  ├── lua/
+  │   ├── config/          Core configuration
+  │   │   ├── options.lua  Vim settings
+  │   │   ├── keymaps.lua  Key bindings
+  │   │   ├── autocmds.lua Autocommands
+  │   │   └── lazy.lua     Plugin manager
+  │   └── plugins/         Plugin specifications
+  │       ├── ui/          UI enhancements
+  │       ├── editor/      Editor features
+  │       ├── lsp/         LSP configuration
+  │       ├── coding/      Coding tools
+  │       └── git/         Git integration
+  └── docs/                Documentation (see below)
+
+================================================================================
+KEY MAPPINGS                                              *kickstart-keymaps*
+
+Leader key: <Space>
+
+General:~
+  <Esc>          Clear search highlights
+  <leader>q      Open diagnostic quickfix list
+  <C-h/j/k/l>    Navigate between windows
+
+LSP (when attached):~
+  grd            Go to definition
+  grr            Find references
+  gri            Go to implementation
+  grt            Go to type definition
+  grn            Rename symbol
+  gra            Code action
+
+Telescope:~
+  <leader>sf     Search files
+  <leader>sg     Live grep
+  <leader>sw     Search current word
+  <leader>sh     Search help
+  <leader>/      Fuzzy search in current buffer
+
+Git (via gitsigns):~
+  ]c / [c        Next/previous git change
+  <leader>hs     Stage hunk
+  <leader>hr     Reset hunk
+  <leader>hp     Preview hunk
+  <leader>hb     Blame line
+
+See |kickstart-keymaps.lua| and |kickstart-lsp-keymaps| for complete list.
+
+================================================================================
+CUSTOMIZATION                                       *kickstart-customization*
+
+Adding a plugin:~
+  1. Create a new file in appropriate `lua/plugins/` subdirectory
+  2. Return a lazy.nvim plugin spec
+  3. Restart Neovim or run `:Lazy sync`
+
+Example:
+>lua
+  -- lua/plugins/editor/my-plugin.lua
+  return {
+    'author/plugin-name',
+    event = 'VeryLazy',
+    config = function()
+      require('plugin-name').setup()
+    end,
+  }
+<
+
+Removing a plugin:~
+  1. Delete the plugin file from `lua/plugins/`
+  2. Restart Neovim
+  3. Run `:Lazy clean`
+
+Modifying settings:~
+  • Vim options: Edit `lua/config/options.lua`
+  • Key mappings: Edit `lua/config/keymaps.lua`
+  • LSP servers: Edit `lua/plugins/lsp/servers.lua`
+  • Colorscheme: Edit `lua/plugins/ui/colorscheme.lua`
+
+================================================================================
+DOCUMENTATION                                               *kickstart-docs*
+
+Comprehensive documentation available in `docs/` folder:
+
+General Questions:~
+  • How is this different from kickstart.nvim?
+  • Why tabs instead of spaces?
+  • How do I uninstall?
+
+Plugin Management:~
+  • How do I add a new plugin?
+  • How do I remove an existing plugin?
+  • How do I temporarily disable a plugin?
+  • How do I load a local plugin?
+  • How do I configure lazy-loading?
+
+Troubleshooting:~
+  • A plugin is causing errors. How do I troubleshoot?
+
+View documentation:~
+  Online: https://github.com/your-repo/docs/faq/
+  Local:  `cat ~/.config/nvim/docs/faq/README.md`
+
+================================================================================
+COMMANDS                                                  *kickstart-commands*
+
+Lazy.nvim plugin manager:~
+  :Lazy                Open Lazy UI
+  :Lazy install        Install missing plugins
+  :Lazy update         Update plugins
+  :Lazy clean          Remove unused plugins
+  :Lazy sync           Install + update + clean
+  :Lazy log            Show plugin logs
+  :Lazy profile        Show startup performance
+
+LSP:~
+  :LspInfo             Show LSP client info
+  :Mason               Manage language servers
+  :checkhealth lsp     Diagnose LSP issues
+
+Telescope:~
+  :Telescope           Open Telescope picker list
+  :Telescope find_files
+  :Telescope live_grep
+  :Telescope diagnostics
+
+================================================================================
+TESTING                                                 *kickstart-testing*
+
+Try before committing:~
+
+  1. Clone to separate directory:
+     `git clone <url> ~/.config/nvim-modular`
+
+  2. Test with NVIM_APPNAME:
+     `NVIM_APPNAME=nvim-modular nvim`
+
+  3. Create alias (optional):
+     `alias nv='NVIM_APPNAME=nvim-modular nvim'`
+
+Your original ~/.config/nvim remains untouched!
+
+================================================================================
+CODE QUALITY                                              *kickstart-quality*
+
+Before committing changes:
+>sh
+  cd ~/.config/nvim
+  make pre-commit
+<
+
+This runs formatting and linting checks to ensure code quality.
+
+Makefile targets:~
+  make check         Run all checks (format + lint)
+  make format-fix    Auto-format all Lua files
+  make lint          Lint with luacheck
+  make test          Validate Lua syntax
+  make pre-commit    Full pre-commit validation
+
+================================================================================
+CREDITS                                                   *kickstart-credits*
+
+This configuration is based on kickstart.nvim by TJ DeVries and contributors:
+  https://github.com/nvim-lua/kickstart.nvim
+
+The modular structure is inspired by best practices from the Neovim community.
+
+================================================================================
+LICENSE                                                   *kickstart-license*
+
+MIT License - same as the original kickstart.nvim project.
+
+================================================================================
  vim:tw=78:ts=8:ft=help:norl:
