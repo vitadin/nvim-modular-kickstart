@@ -13,23 +13,32 @@
 #   - luacheck: luarocks install luacheck  (or: brew install luacheck)
 #   - neovim:   For testing configuration
 
-.PHONY: help format lint check test clean install-tools
+.PHONY: help format lint check test clean clean-nvim clean-test clean-all install-tools
 
 # Default target
 help:
 	@echo "Kickstart.nvim - Code Quality Targets"
 	@echo "======================================"
 	@echo ""
-	@echo "Available targets:"
+	@echo "Code Quality:"
 	@echo "  make format        - Format all Lua files with stylua"
 	@echo "  make lint          - Lint all Lua files with luacheck"
 	@echo "  make check         - Run format + lint (recommended before commits)"
 	@echo "  make test          - Test that Neovim can load the configuration"
-	@echo "  make clean         - Remove backup files and caches"
+	@echo ""
+	@echo "Cleanup:"
+	@echo "  make clean         - Remove backup files"
+	@echo "  make clean-nvim    - Clean main Neovim data and cache"
+	@echo "  make clean-test    - Clean test installation (nvim-modular)"
+	@echo "  make clean-all     - Clean everything (requires confirmation)"
+	@echo ""
+	@echo "Tools:"
 	@echo "  make install-tools - Show instructions for installing required tools"
+	@echo "  make verify-tools  - Check if all tools are installed"
 	@echo ""
 	@echo "Quick start:"
 	@echo "  make check         - Verify code quality"
+	@echo "  make clean-test    - Clean test installation before testing"
 	@echo ""
 
 # Format all Lua files
@@ -96,12 +105,64 @@ test-health:
 		exit 1; \
 	fi
 
-# Clean backup files and caches
+# Clean backup files in current directory
 clean:
-	@echo "==> Cleaning backup files and caches..."
+	@echo "==> Cleaning backup files..."
 	@find . -type f -name "*.backup" -delete
 	@find . -type f -name "*~" -delete
 	@echo "✓ Cleanup complete"
+
+# Clean Neovim data and cache (for troubleshooting)
+clean-nvim:
+	@echo "==> Cleaning Neovim data and cache..."
+	@echo "This will remove:"
+	@echo "  - Plugin data: ~/.local/share/nvim/"
+	@echo "  - Cache files: ~/.cache/nvim/"
+	@echo ""
+	@read -p "Are you sure? (y/N): " confirm && [ "$$confirm" = "y" ] || exit 1
+	@rm -rf ~/.local/share/nvim
+	@rm -rf ~/.cache/nvim
+	@echo "✓ Neovim data and cache cleaned"
+	@echo "Note: Plugins will reinstall on next launch"
+
+# Clean test installation (nvim-modular)
+clean-test:
+	@echo "==> Cleaning test installation (nvim-modular)..."
+	@echo "This will remove:"
+	@echo "  - Config: ~/.config/nvim-modular/"
+	@echo "  - Data:   ~/.local/share/nvim-modular/"
+	@echo "  - Cache:  ~/.cache/nvim-modular/"
+	@echo ""
+	@if [ -d ~/.config/nvim-modular ] || [ -d ~/.local/share/nvim-modular ] || [ -d ~/.cache/nvim-modular ]; then \
+		read -p "Are you sure? (y/N): " confirm && [ "$$confirm" = "y" ] || exit 1; \
+		rm -rf ~/.config/nvim-modular; \
+		rm -rf ~/.local/share/nvim-modular; \
+		rm -rf ~/.cache/nvim-modular; \
+		echo "✓ Test installation cleaned"; \
+	else \
+		echo "No test installation found"; \
+	fi
+
+# Clean all (backup files + Neovim data + test installation)
+clean-all:
+	@echo "==> Cleaning everything..."
+	@echo "This will remove:"
+	@echo "  - Backup files in current directory"
+	@echo "  - Main Neovim data: ~/.local/share/nvim/"
+	@echo "  - Main Neovim cache: ~/.cache/nvim/"
+	@echo "  - Test config: ~/.config/nvim-modular/"
+	@echo "  - Test data: ~/.local/share/nvim-modular/"
+	@echo "  - Test cache: ~/.cache/nvim-modular/"
+	@echo ""
+	@read -p "Are you sure? This will require reinstalling plugins. (y/N): " confirm && [ "$$confirm" = "y" ] || exit 1
+	@find . -type f -name "*.backup" -delete
+	@find . -type f -name "*~" -delete
+	@rm -rf ~/.local/share/nvim
+	@rm -rf ~/.cache/nvim
+	@rm -rf ~/.config/nvim-modular
+	@rm -rf ~/.local/share/nvim-modular
+	@rm -rf ~/.cache/nvim-modular
+	@echo "✓ All cleaned"
 
 # Show installation instructions for required tools
 install-tools:
