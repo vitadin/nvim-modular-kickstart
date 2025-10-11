@@ -77,9 +77,18 @@ kickstart.nvim/
 ## Requirements
 
 ### Neovim
-Requires Neovim 0.10+ (stable or nightly). Check your version:
+Requires Neovim 0.11+ (nightly recommended). While Neovim 0.10 may work, you'll see deprecation warnings from nvim-lspconfig. Check your version:
 ```sh
 nvim --version
+```
+
+To install Neovim nightly:
+```sh
+# macOS
+brew install --HEAD neovim
+
+# Or download from:
+# https://github.com/neovim/neovim/releases/tag/nightly
 ```
 
 ### System Dependencies
