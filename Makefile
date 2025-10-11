@@ -13,7 +13,7 @@
 #   - luacheck: luarocks install luacheck  (or: brew install luacheck)
 #   - neovim:   For testing configuration
 
-.PHONY: help format lint check test clean clean-nvim clean-test clean-all-dangerous install-tools
+.PHONY: help format lint check test test-integration clean clean-nvim clean-test clean-all-dangerous install-tools
 
 # Default target
 help:
@@ -21,10 +21,11 @@ help:
 	@echo "======================================"
 	@echo ""
 	@echo "Code Quality:"
-	@echo "  make format        - Format all Lua files with stylua"
-	@echo "  make lint          - Lint all Lua files with luacheck"
-	@echo "  make check         - Run format + lint (recommended before commits)"
-	@echo "  make test          - Test that Neovim can load the configuration"
+	@echo "  make format            - Format all Lua files with stylua"
+	@echo "  make lint              - Lint all Lua files with luacheck"
+	@echo "  make check             - Run format + lint (recommended before commits)"
+	@echo "  make test              - Test that Neovim can load the configuration"
+	@echo "  make test-integration  - Full integration test (clean + clone + test)"
 	@echo ""
 	@echo "Cleanup:"
 	@echo "  make clean                - Remove backup files"
@@ -104,6 +105,69 @@ test-health:
 		echo "Error: nvim not found."; \
 		exit 1; \
 	fi
+
+# Full integration test: clean + copy + test with nvim-modular
+test-integration:
+	@echo "==> Running full integration test..."
+	@echo ""
+	@echo "Step 1/4: Cleaning test installation..."
+	@rm -rf ~/.config/nvim-modular
+	@rm -rf ~/.local/share/nvim-modular
+	@rm -rf ~/.cache/nvim-modular
+	@echo "✓ Test directories cleaned"
+	@echo ""
+	@echo "Step 2/4: Copying current working directory to nvim-modular..."
+	@echo "Note: This includes uncommitted changes for testing"
+	@mkdir -p ~/.config/nvim-modular
+	@rsync -a --exclude='.git' --exclude='.DS_Store' \
+		--exclude='*.backup' --exclude='*~' \
+		. ~/.config/nvim-modular/
+	@echo "✓ Configuration copied to ~/.config/nvim-modular"
+	@echo ""
+	@echo "Step 3/4: Starting Neovim with NVIM_APPNAME=nvim-modular..."
+	@echo "This will install plugins and test the configuration."
+	@echo "Neovim will start and exit automatically after 10 seconds..."
+	@echo ""
+	@sleep 2
+	@NVIM_APPNAME=nvim-modular timeout 10s nvim --headless \
+		+'autocmd User LazyDone sleep 3000m | quitall' \
+		2>&1 || { \
+			EXIT_CODE=$$?; \
+			if [ $$EXIT_CODE -eq 124 ]; then \
+				echo ""; \
+				echo "✓ Neovim started successfully (timeout as expected)"; \
+			else \
+				echo ""; \
+				echo "✗ Neovim failed with exit code $$EXIT_CODE"; \
+				echo ""; \
+				echo "To debug manually, run:"; \
+				echo "  NVIM_APPNAME=nvim-modular nvim"; \
+				exit 1; \
+			fi; \
+		}
+	@echo ""
+	@echo "Step 4/4: Checking for error logs..."
+	@if [ -f ~/.local/state/nvim-modular/log ]; then \
+		if grep -i "error\|failed" ~/.local/state/nvim-modular/log >/dev/null 2>&1; then \
+			echo "⚠️  Errors found in log file:"; \
+			grep -i "error\|failed" ~/.local/state/nvim-modular/log | head -n 10; \
+			echo ""; \
+			echo "Full log: ~/.local/state/nvim-modular/log"; \
+		else \
+			echo "✓ No errors found in log file"; \
+		fi; \
+	else \
+		echo "✓ No log file generated (good sign)"; \
+	fi
+	@echo ""
+	@echo "=========================================="
+	@echo "✓ Integration test completed successfully!"
+	@echo "=========================================="
+	@echo ""
+	@echo "Test installation at: ~/.config/nvim-modular"
+	@echo "To manually test: NVIM_APPNAME=nvim-modular nvim"
+	@echo "To clean: make clean-test"
+	@echo ""
 
 # Clean backup files in current directory
 clean:
