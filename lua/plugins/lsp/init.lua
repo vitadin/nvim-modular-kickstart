@@ -95,23 +95,30 @@ return {
 		-- Setup Mason first
 		require('mason').setup()
 
-		-- Setup mason-lspconfig with handlers
-		require('mason-lspconfig').setup {
-			handlers = {
-				function(server_name)
-					local server = servers[server_name] or {}
-					-- This handles overriding only values explicitly passed
-					-- by the server configuration above. Useful when disabling
-					-- certain features of an LSP (for example, turning off formatting for ts_ls)
-					server.capabilities = vim.tbl_deep_extend(
-						'force',
-						{},
-						capabilities,
-						server.capabilities or {}
-					)
-					require('lspconfig')[server_name].setup(server)
-				end,
-			},
+		-- Setup mason-lspconfig
+		-- Disable automatic_enable to avoid compatibility issues
+		local mason_lspconfig = require 'mason-lspconfig'
+		mason_lspconfig.setup {
+			-- Explicitly disable automatic server setup
+			-- We handle this manually via handlers below
+			automatic_installation = false,
+		}
+
+		-- Manually setup LSP servers using handlers
+		mason_lspconfig.setup_handlers {
+			function(server_name)
+				local server = servers[server_name] or {}
+				-- This handles overriding only values explicitly passed
+				-- by the server configuration above. Useful when disabling
+				-- certain features of an LSP (for example, turning off formatting for ts_ls)
+				server.capabilities = vim.tbl_deep_extend(
+					'force',
+					{},
+					capabilities,
+					server.capabilities or {}
+				)
+				require('lspconfig')[server_name].setup(server)
+			end,
 		}
 
 		-- Install tools after LSP handlers are set up
