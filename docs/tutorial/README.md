@@ -44,12 +44,24 @@ skill. No overwhelming 500+ line documents!
     references, etc.
 13. [**Git Workflow**](./07-git-workflow.md) - Using gitsigns and neogit
 
-### Advanced Level
+### Advanced Level: Telescope - Fuzzy Finding
 
-14. [**Telescope Mastery**](./08-telescope-mastery.md) - Fuzzy finding
-    everything
-15. [**Custom Keymaps**](./09-custom-keymaps.md) - Creating your own shortcuts
-16. [**Plugin Management**](./10-plugin-management.md) - Adding, removing,
+14. [**What is Telescope and Search Scope**](./08-telescope-what-and-scope.md) -
+    Understanding where Telescope searches
+15. [**Basic Telescope Usage**](./08-telescope-basic-usage.md) - Essential
+    commands and navigation
+16. [**Find Files**](./08-telescope-find-files.md) - Search files by name
+17. [**Live Grep**](./08-telescope-live-grep.md) - Search file contents
+18. [**Search Current Buffer**](./08-telescope-search-current-buffer.md) - See
+    all matches at once
+19. [**Recent Files**](./08-telescope-recent-files.md) - Fastest file switching
+20. [**Quickfix Integration**](./08-telescope-quickfix.md) - Systematic
+    navigation through results
+
+### Other Advanced Topics
+
+21. [**Custom Keymaps**](./09-custom-keymaps.md) - Creating your own shortcuts
+22. [**Plugin Management**](./10-plugin-management.md) - Adding, removing,
     configuring plugins
 
 ## Quick Start: Jump to What You Need
@@ -61,7 +73,10 @@ skill. No overwhelming 500+ line documents!
 - **Manage files like a buffer** → [What is Oil?](./03-oil-introduction.md)
 - **Create/delete files in Vim** → [Creating Files](./03-oil-creating-files.md)
 - **Rename and organize files** → [Editing Files](./03-oil-editing-files.md)
-- **See common usage patterns** → [Leap Workflows](./01-leap-common-workflows.md) or [Oil Workflows](./03-oil-workflows.md)
+- **Find files instantly** → [Telescope Find Files](./08-telescope-find-files.md)
+- **Search all file contents** → [Telescope Live Grep](./08-telescope-live-grep.md)
+- **See all matches at once** → [Search Current Buffer](./08-telescope-search-current-buffer.md)
+- **Switch files fast** → [Recent Files](./08-telescope-recent-files.md)
 
 ## Quick Reference
 
