@@ -411,6 +411,20 @@ Comprehensive guides for common questions and configuration tasks.
 - [Lazy-Loading Strategies](docs/faq/lazy-loading.md)
 - [Debugging Commands Reference](docs/faq/troubleshooting.md#quick-reference-debugging-commands)
 
+## Learning Neovim
+
+New to Neovim or want to learn efficient workflows? Check out the
+**[Tutorial Series](docs/tutorial/README.md)**!
+
+**Featured tutorials:**
+- [Multi-File Navigation](docs/tutorial/04-multi-file-navigation.md) - Jump
+  between files efficiently
+- More tutorials coming soon based on common questions
+
+The tutorial series teaches you how to use Neovim efficiently with this
+configuration, covering everything from basic navigation to advanced
+workflows.
+
 ## Credits
 
 This configuration is based on [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)
