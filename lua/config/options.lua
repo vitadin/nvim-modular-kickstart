@@ -4,9 +4,8 @@
 -- Make line numbers default
 vim.o.number = true
 
--- You can also add relative line numbers, to help with jumping.
--- Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+-- Enable relative line numbers for easier jumping
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -24,6 +23,9 @@ end)
 
 -- Enable break indent
 vim.o.breakindent = true
+
+-- Show wrapped line prefix
+vim.o.showbreak = '⇢  '
 
 -- Save undo history
 vim.o.undofile = true
@@ -49,7 +51,14 @@ vim.o.splitbelow = true
 -- Sets how neovim will display certain whitespace characters in the editor.
 -- See `:help 'list'` and `:help 'listchars'`
 vim.o.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = {
+	tab = '» ',
+	space = '·',
+	trail = '␣',
+	nbsp = '⍽',
+	extends = '›',
+	precedes = '‹',
+}
 
 -- Preview substitutions live, as you type!
 vim.o.inccommand = 'split'
@@ -64,3 +73,6 @@ vim.o.scrolloff = 10
 -- raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
+
+-- Set line spacing (only works in GUI clients like neovide)
+vim.o.linespace = 2
