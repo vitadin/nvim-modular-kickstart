@@ -62,10 +62,12 @@ kickstart.nvim/
 │   │   ├── keymaps.lua         # Key bindings
 │   │   ├── autocmds.lua        # Autocommands
 │   │   └── lazy.lua            # Plugin manager setup
+│   ├── lsp/                    # LSP configuration data
+│   │   └── servers.lua         # LSP server definitions
 │   └── plugins/                # Plugin specifications
 │       ├── ui/                 # UI enhancements (colorscheme, statusline)
 │       ├── editor/             # Editor features (telescope, treesitter)
-│       ├── lsp/                # LSP configuration
+│       ├── lsp/                # LSP plugin setup
 │       ├── coding/             # Coding tools (completion, formatting)
 │       └── git/                # Git integration
 ├── Makefile                    # Build automation
@@ -290,7 +292,7 @@ Lazy.nvim will automatically detect and load it.
 
 - **Vim options**: Edit `lua/config/options.lua`
 - **Key mappings**: Edit `lua/config/keymaps.lua`
-- **LSP servers**: Edit `lua/plugins/lsp/servers.lua`
+- **LSP servers**: Edit `lua/lsp/servers.lua`
 - **Colorscheme**: Edit `lua/plugins/ui/colorscheme.lua`
 
 ### Code Quality Standards

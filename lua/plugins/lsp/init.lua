@@ -81,7 +81,7 @@ return {
 		local capabilities = require('blink.cmp').get_lsp_capabilities()
 
 		-- Load server configurations
-		local servers = require 'plugins.lsp.servers'
+		local servers = require 'lsp.servers'
 
 		-- Ensure the servers and tools are installed
 		--
