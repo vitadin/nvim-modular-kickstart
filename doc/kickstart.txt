@@ -142,7 +142,7 @@ Troubleshooting:~
   • A plugin is causing errors. How do I troubleshoot?
 
 View documentation:~
-  Online: https://github.com/your-repo/docs/faq/
+  Online: https://github.com/vitadin/nvim-modular-kickstart/tree/main/docs/faq
   Local:  `cat ~/.config/nvim/docs/faq/README.md`
 
 ================================================================================
@@ -174,7 +174,7 @@ TESTING                                                 *kickstart-testing*
 Try before committing:~
 
   1. Clone to separate directory:
-     `git clone <url> ~/.config/nvim-modular`
+     `git clone https://github.com/vitadin/nvim-modular-kickstart.git ~/.config/nvim-modular`
 
   2. Test with NVIM_APPNAME:
      `NVIM_APPNAME=nvim-modular nvim`

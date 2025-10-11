@@ -116,7 +116,7 @@ Neovim setup:**
 ### Step 1: Clone to a separate directory
 ```sh
 # Clone to ~/.config/nvim-modular (or any name you like)
-git clone <your-fork-url> "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim-modular
+git clone https://github.com/vitadin/nvim-modular-kickstart.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim-modular
 ```
 
 ### Step 2: Test with NVIM_APPNAME
@@ -177,7 +177,7 @@ mv ~/.local/share/nvim ~/.local/share/nvim.backup
 
 2. **Clone this repository**:
 ```sh
-git clone <your-fork-url> "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+git clone https://github.com/vitadin/nvim-modular-kickstart.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
 
 3. **Start Neovim**:
@@ -202,7 +202,7 @@ brew install neovim git ripgrep fd gcc make
 brew install stylua luacheck
 
 # Clone config
-git clone <your-fork-url> "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+git clone https://github.com/vitadin/nvim-modular-kickstart.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
 
 </details>
@@ -222,7 +222,7 @@ cargo install stylua
 sudo apt install luarocks && luarocks install luacheck
 
 # Clone config
-git clone <your-fork-url> "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+git clone https://github.com/vitadin/nvim-modular-kickstart.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
 
 </details>
@@ -238,7 +238,7 @@ cargo install stylua
 sudo dnf install luarocks && luarocks install luacheck
 
 # Clone config
-git clone <your-fork-url> "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+git clone https://github.com/vitadin/nvim-modular-kickstart.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
 
 </details>
@@ -253,7 +253,7 @@ sudo pacman -S --noconfirm --needed neovim git make gcc ripgrep fd unzip
 sudo pacman -S stylua lua51-luacheck
 
 # Clone config
-git clone <your-fork-url> "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+git clone https://github.com/vitadin/nvim-modular-kickstart.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
 
 </details>
