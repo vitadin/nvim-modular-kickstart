@@ -7,8 +7,8 @@ you master Neovim efficiently using this modular configuration.
 
 ### Beginner Level
 
-1. [**Basic Navigation**](./01-basic-navigation.md) - Essential movement
-   commands
+1. [**Basic Navigation**](./01-basic-navigation.md) - Lightning-fast movement
+   with Leap.nvim
 2. [**Editing Basics**](./02-editing-basics.md) - Insert, delete, change text
 3. [**File Operations**](./03-file-operations.md) - Managing files with Oil.nvim
 
@@ -35,6 +35,7 @@ you master Neovim efficiently using this modular configuration.
 ### This Configuration's Special Features
 
 - **Leader key**: `<Space>`
+- **Leap.nvim**: `s` (leap forward), `S` (leap backward), `gs` (leap windows)
 - **Oil.nvim**: `-` (file manager), `<Space>-` (floating window)
 - **Telescope**: `<leader>sf` (search files), `<leader>sg` (live grep)
 - **LSP**: `grd` (definition), `grr` (references), `grn` (rename)

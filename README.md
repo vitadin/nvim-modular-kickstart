@@ -417,6 +417,8 @@ New to Neovim or want to learn efficient workflows? Check out the
 **[Tutorial Series](docs/tutorial/README.md)**!
 
 **Featured tutorials:**
+- [Basic Navigation](docs/tutorial/01-basic-navigation.md) - Lightning-fast
+  movement with Leap.nvim
 - [File Operations](docs/tutorial/03-file-operations.md) - Manage files with
   Oil.nvim
 - [Multi-File Navigation](docs/tutorial/04-multi-file-navigation.md) - Jump
