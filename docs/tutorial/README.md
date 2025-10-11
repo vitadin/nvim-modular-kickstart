@@ -1,34 +1,67 @@
 # Neovim Tutorial Series
 
-Welcome to the Neovim tutorial series! This collection of guides will help
-you master Neovim efficiently using this modular configuration.
+Welcome to the Neovim tutorial series! This collection of focused, single-topic
+guides will help you master Neovim efficiently using this modular configuration.
+
+**Philosophy:** Each tutorial solves a single problem or teaches one specific
+skill. No overwhelming 500+ line documents!
 
 ## Learning Path
 
-### Beginner Level
+### Beginner Level: Basic Navigation with Leap.nvim
 
-1. [**Basic Navigation**](./01-basic-navigation.md) - Lightning-fast movement
-   with Leap.nvim
-2. [**Editing Basics**](./02-editing-basics.md) - Insert, delete, change text
-3. [**File Operations**](./03-file-operations.md) - Managing files with Oil.nvim
+1. [**What is Leap and Why?**](./01-leap-what-and-why.md) - Understand Leap's
+   philosophy and speed advantages
+2. [**Basic Leap Usage**](./01-leap-basic-usage.md) - Learn the three commands
+   with step-by-step tutorials
+3. [**Common Workflows**](./01-leap-common-workflows.md) - Real-world usage
+   patterns for daily coding
+4. [**Advanced Techniques**](./01-leap-advanced.md) - Power user tips and
+   tricks
+
+### Beginner Level: Editing Basics
+
+5. [**Editing Basics**](./02-editing-basics.md) - Insert, delete, change text
+
+### Beginner Level: File Operations with Oil.nvim
+
+6. [**What is Oil.nvim?**](./03-oil-introduction.md) - Understanding Oil's
+   buffer-based file management
+7. [**Creating Files and Folders**](./03-oil-creating-files.md) - Making new
+   files and directories
+8. [**Editing Files**](./03-oil-editing-files.md) - Rename, delete, copy, and
+   move files
+9. [**Common Workflows**](./03-oil-workflows.md) - Real-world file management
+   patterns
 
 ### Intermediate Level
 
-4. [**Multi-File Navigation**](./04-multi-file-navigation.md) - Jump between
-   files efficiently
-5. [**Search and Replace**](./05-search-replace.md) - Finding and replacing
-   text
-6. [**LSP Features**](./06-lsp-features.md) - Go to definition, find
-   references, etc.
-7. [**Git Workflow**](./07-git-workflow.md) - Using gitsigns and neogit
+10. [**Multi-File Navigation**](./04-multi-file-navigation.md) - Jump between
+    files efficiently
+11. [**Search and Replace**](./05-search-replace.md) - Finding and replacing
+    text
+12. [**LSP Features**](./06-lsp-features.md) - Go to definition, find
+    references, etc.
+13. [**Git Workflow**](./07-git-workflow.md) - Using gitsigns and neogit
 
 ### Advanced Level
 
-8. [**Telescope Mastery**](./08-telescope-mastery.md) - Fuzzy finding
-   everything
-9. [**Custom Keymaps**](./09-custom-keymaps.md) - Creating your own shortcuts
-10. [**Plugin Management**](./10-plugin-management.md) - Adding, removing,
+14. [**Telescope Mastery**](./08-telescope-mastery.md) - Fuzzy finding
+    everything
+15. [**Custom Keymaps**](./09-custom-keymaps.md) - Creating your own shortcuts
+16. [**Plugin Management**](./10-plugin-management.md) - Adding, removing,
     configuring plugins
+
+## Quick Start: Jump to What You Need
+
+### I want to...
+
+- **Move faster in files** → [What is Leap?](./01-leap-what-and-why.md)
+- **Jump anywhere in 3 keystrokes** → [Basic Leap Usage](./01-leap-basic-usage.md)
+- **Manage files like a buffer** → [What is Oil?](./03-oil-introduction.md)
+- **Create/delete files in Vim** → [Creating Files](./03-oil-creating-files.md)
+- **Rename and organize files** → [Editing Files](./03-oil-editing-files.md)
+- **See common usage patterns** → [Leap Workflows](./01-leap-common-workflows.md) or [Oil Workflows](./03-oil-workflows.md)
 
 ## Quick Reference
 

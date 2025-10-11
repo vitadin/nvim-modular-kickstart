@@ -416,19 +416,29 @@ Comprehensive guides for common questions and configuration tasks.
 New to Neovim or want to learn efficient workflows? Check out the
 **[Tutorial Series](docs/tutorial/README.md)**!
 
-**Featured tutorials:**
-- [Basic Navigation](docs/tutorial/01-basic-navigation.md) - Lightning-fast
-  movement with Leap.nvim
-- [File Operations](docs/tutorial/03-file-operations.md) - Manage files with
-  Oil.nvim
-- [Multi-File Navigation](docs/tutorial/04-multi-file-navigation.md) - Jump
-  between files efficiently
-- [Telescope Mastery](docs/tutorial/08-telescope-mastery.md) - Master fuzzy
-  finding
+**Tutorial philosophy:** Each tutorial is focused and solves a single problem.
+No overwhelming 500+ line documents!
+
+**Getting started:**
+- [What is Leap?](docs/tutorial/01-leap-what-and-why.md) - Lightning-fast
+  navigation philosophy
+- [Basic Leap Usage](docs/tutorial/01-leap-basic-usage.md) - Jump anywhere in 3
+  keystrokes
+- [What is Oil?](docs/tutorial/03-oil-introduction.md) - File management like a
+  buffer
+- [Creating Files](docs/tutorial/03-oil-creating-files.md) - Make files in Vim
+  style
+
+**Common workflows:**
+- [Leap Workflows](docs/tutorial/01-leap-common-workflows.md) - Real-world
+  navigation patterns
+- [Oil Workflows](docs/tutorial/03-oil-workflows.md) - File management patterns
+- [Telescope Mastery](docs/tutorial/08-telescope-mastery.md) - Fuzzy finding
+  everything
 
 The tutorial series teaches you how to use Neovim efficiently with this
 configuration, covering everything from basic navigation to advanced
-workflows.
+workflows. Each guide is short and focused on solving one specific problem.
 
 ## Credits
 

@@ -360,20 +360,66 @@ Press Enter → instantly open options.lua
 **When to use:** Searching within the file you're currently editing
 
 **What it does:**
-Shows all lines matching your search, with preview.
+Shows **ALL** lines matching your search in a clean popup window - no need to
+cycle through with `n`/`N`! This is like having a "show all matches" feature.
 
-**Example:**
+**Why this is powerful:**
 ```
-1. In a large file, press Space /
-2. Type "function"
-3. See all lines containing "function"
-4. Press Enter to jump to selected line
+Traditional /search:              Telescope Space /:
+• Type /pattern                   • Press Space /
+• Press Enter                     • Type pattern
+• See first match                 • See ALL matches instantly!
+• Press n, n, n... to cycle       • Navigate with j/k
+• Can't see all at once           • Preview shows context
+                                  • Jump to any match with Enter
+```
+
+**Example scenario:**
+```
+You have a 500-line file with "TODO" on lines: 10, 45, 120, 300, 450
+
+Traditional way:
+1. Type /TODO<Enter>
+2. At line 10, press n → line 45
+3. Press n → line 120
+4. Press n → line 300
+5. Press n → line 450
+(Can only see one at a time, easy to miss some)
+
+Telescope way (Space /):
+1. Press Space /
+2. Type "TODO"
+3. Instantly see ALL matches:
+   ┌────────────────────────────┐
+   │  10: # TODO: Fix this      │
+   │  45: # TODO: Add tests     │
+   │ 120: # TODO: Refactor      │
+   │ 300: # TODO: Optimize      │
+   │ 450: # TODO: Document      │
+   └────────────────────────────┘
+4. Use j/k to browse, Enter to jump
+(See all 5 at once, choose which to visit!)
+```
+
+**Real-world use case:**
+```
+Scenario: You're in a long file and want to see all "return" statements
+
+1. Press Space /
+2. Type "return"
+3. See popup with all lines containing "return"
+4. Gapped lines are hidden - only matching lines shown!
+5. Navigate with j/k, read context in preview
+6. Press Enter to jump to the one you want
 ```
 
 **Better than:** Regular `/` search because:
-- See all matches at once
-- Preview context
-- Fuzzy matching
+- **See all matches simultaneously** - No cycling with n/n/n
+- **Overview of entire file** - Quickly scan all occurrences
+- **Gapped lines hidden** - Only matching lines displayed (like folding!)
+- **Preview context** - See surrounding code without jumping
+- **Fuzzy matching** - Type "func" matches "function", "functional", etc.
+- **Navigate easily** - j/k to move, Enter to jump
 
 ---
 
@@ -633,7 +679,52 @@ Use recent files (Space Space):
 4. Press Enter to open full help page
 ```
 
-### Workflow 6: Track Down Function Definition
+### Workflow 6: See All Matches at Once in Long File
+
+**Goal:** View all occurrences of a pattern in a large file without cycling
+
+**This is exactly what you wanted - like search with folding!**
+
+```
+Scenario: 1000-line file, want to see all "TODO" comments
+
+1. Press Space / (search current buffer)
+2. Type "TODO"
+3. Telescope shows ALL matches instantly:
+   ┌──────────────────────────────────┐
+   │  12: # TODO: Refactor this       │
+   │  45: # TODO: Add error handling  │
+   │ 234: # TODO: Optimize query      │
+   │ 567: # TODO: Write tests         │
+   │ 891: # TODO: Update docs         │
+   └──────────────────────────────────┘
+4. Lines 13-44, 46-233, 235-566, etc. are hidden!
+5. Navigate with j/k, preview shows context
+6. Press Enter to jump to the one you want
+```
+
+**Why this is better than /search:**
+- **No cycling through n/n/n** - See everything at once
+- **Gapped lines hidden** - Like automatic folding
+- **Quick overview** - Instantly see all locations
+- **Easy navigation** - j/k instead of n/N
+- **Context preview** - See surrounding code before jumping
+
+**Another example:**
+```
+Want to see all "return" statements in current file?
+
+Space / → Type "return" → See all returns with line numbers
+```
+
+**Pro tip:** This works great for:
+- Finding all TODO/FIXME comments
+- Locating all function definitions
+- Seeing all error handling blocks
+- Reviewing all console.log/print statements
+- Finding all imports/requires
+
+### Workflow 7: Track Down Function Definition
 
 **Goal:** Cursor on `setup()`, want to see where it's defined
 
