@@ -13,7 +13,7 @@
 #   - luacheck: luarocks install luacheck  (or: brew install luacheck)
 #   - neovim:   For testing configuration
 
-.PHONY: help format lint check test clean clean-nvim clean-test clean-all install-tools
+.PHONY: help format lint check test clean clean-nvim clean-test clean-all-dangerous install-tools
 
 # Default target
 help:
@@ -27,10 +27,10 @@ help:
 	@echo "  make test          - Test that Neovim can load the configuration"
 	@echo ""
 	@echo "Cleanup:"
-	@echo "  make clean         - Remove backup files"
-	@echo "  make clean-nvim    - Clean main Neovim data and cache"
-	@echo "  make clean-test    - Clean test installation (nvim-modular)"
-	@echo "  make clean-all     - Clean everything (requires confirmation)"
+	@echo "  make clean                - Remove backup files"
+	@echo "  make clean-nvim           - Clean main Neovim data and cache"
+	@echo "  make clean-test           - Clean test installation (nvim-modular)"
+	@echo "  make clean-all-dangerous  - ⚠️  DANGER: Clean everything!"
 	@echo ""
 	@echo "Tools:"
 	@echo "  make install-tools - Show instructions for installing required tools"
@@ -144,9 +144,11 @@ clean-test:
 	fi
 
 # Clean all (backup files + Neovim data + test installation)
-clean-all:
-	@echo "==> Cleaning everything..."
-	@echo "This will remove:"
+# WARNING: This is a destructive operation!
+clean-all-dangerous:
+	@echo "⚠️  ⚠️  ⚠️  DANGER: DESTRUCTIVE OPERATION ⚠️  ⚠️  ⚠️"
+	@echo ""
+	@echo "This will PERMANENTLY DELETE:"
 	@echo "  - Backup files in current directory"
 	@echo "  - Main Neovim data: ~/.local/share/nvim/"
 	@echo "  - Main Neovim cache: ~/.cache/nvim/"
@@ -154,7 +156,15 @@ clean-all:
 	@echo "  - Test data: ~/.local/share/nvim-modular/"
 	@echo "  - Test cache: ~/.cache/nvim-modular/"
 	@echo ""
-	@read -p "Are you sure? This will require reinstalling plugins. (y/N): " confirm && [ "$$confirm" = "y" ] || exit 1
+	@echo "⚠️  All plugins will need to be reinstalled!"
+	@echo "⚠️  All LSP servers will need to be reinstalled!"
+	@echo "⚠️  Any custom plugin data will be lost!"
+	@echo ""
+	@read -p "Type 'yes' to confirm (anything else will cancel): " confirm && [ "$$confirm" = "yes" ] || { echo "Cancelled."; exit 1; }
+	@echo ""
+	@read -p "Are you ABSOLUTELY sure? Type 'DELETE' to proceed: " confirm2 && [ "$$confirm2" = "DELETE" ] || { echo "Cancelled."; exit 1; }
+	@echo ""
+	@echo "Deleting..."
 	@find . -type f -name "*.backup" -delete
 	@find . -type f -name "*~" -delete
 	@rm -rf ~/.local/share/nvim
@@ -163,6 +173,7 @@ clean-all:
 	@rm -rf ~/.local/share/nvim-modular
 	@rm -rf ~/.cache/nvim-modular
 	@echo "✓ All cleaned"
+	@echo "⚠️  Remember to reinstall plugins on next Neovim launch!"
 
 # Show installation instructions for required tools
 install-tools:
