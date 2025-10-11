@@ -98,12 +98,12 @@ return {
 		}
 
 		-- Setup mason-lspconfig with handlers
-		-- Note: We explicitly disable automatic_installation to avoid
-		-- compatibility issues with different Neovim versions
+		-- Note: We explicitly disable automatic_enable to avoid
+		-- compatibility issues with Neovim 0.10.x
 		require('mason-lspconfig').setup {
-			-- Disable automatic server setup to avoid automatic_enable
-			-- errors on Neovim 0.10.x
-			automatic_installation = false,
+			-- Disable automatic_enable feature (incompatible with Neovim
+			-- 0.10.x). We handle server setup manually via handlers.
+			automatic_enable = false,
 			-- Manually register handlers for server setup
 			handlers = {
 				function(server_name)
