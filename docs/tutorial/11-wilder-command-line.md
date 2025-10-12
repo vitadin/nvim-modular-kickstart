@@ -1,15 +1,14 @@
 # Wilder.nvim: Enhanced Command-Line Experience
 
-A better command-line interface with fuzzy completion and popup menu displayed in
-the center of your screen.
+A better command-line interface with fuzzy completion and popup menu.
 
 ## What is Wilder.nvim?
 
-Wilder.nvim transforms Neovim's command-line experience with a beautiful popup
-menu and fuzzy matching. Instead of seeing suggestions in a cramped single line,
+Wilder.nvim enhances Neovim's command-line with a beautiful popup menu and fuzzy
+matching. Instead of seeing suggestions in a cramped single line at the bottom,
 you get:
 
-- **Centered popup palette** - Command input and suggestions appear in center of screen
+- **Popup menu above command-line** - Clear visual display of all suggestions
 - **Fuzzy matching** - Type partial strings, get smart suggestions
 - **Visual feedback** - See all matching commands at once
 - **Faster navigation** - Tab through suggestions quickly
@@ -157,21 +156,7 @@ lua/plugins/ui/wilder.lua
 
 ### Key Configuration Sections
 
-#### 1. Disabling Native Wildmenu (Lines 15-17)
-
-```lua
--- Disable native wildmenu to prevent conflicts with wilder
-vim.opt.wildmenu = false
-vim.opt.wildmode = ''
-```
-
-**Why this is needed:**
-- Neovim has a native command-line completion menu (wildmenu)
-- Without disabling it, you'll see TWO menus: native (bottom left) and wilder (center)
-- Tab key would control the native menu, not wilder's
-- Disabling wildmenu ensures only wilder's centered popup is shown
-
-#### 2. Basic Setup (Lines 19-27)
+#### 1. Basic Setup (Lines 15-23)
 
 ```lua
 wilder.setup {
@@ -188,7 +173,7 @@ wilder.setup {
 - Change `previous_key` for previous suggestion
 - Example: Use `<C-n>` and `<C-p>` like you would in completion menus
 
-#### 3. Fuzzy Matching Pipeline (Lines 29-40)
+#### 2. Fuzzy Matching Pipeline (Lines 25-36)
 
 ```lua
 wilder.set_option('pipeline', {
@@ -206,41 +191,34 @@ wilder.set_option('pipeline', {
 - Set `fuzzy = 0` to disable fuzzy matching (exact match only)
 - Change `fuzzy_filter` to use different algorithm
 
-#### 4. Popup Appearance (Lines 42-61)
+#### 3. Popup Appearance (Lines 38-54)
 
 ```lua
 wilder.set_option(
     'renderer',
-    wilder.popupmenu_renderer(wilder.popupmenu_palette_theme {
-        -- Palette theme centers the command-line and popup together
-        border = 'rounded',              -- Border style: 'single', 'double', 'rounded'
-        max_height = '20%',              -- Maximum popup height
-        min_height = 0,                  -- Minimum popup height
-        prompt_position = 'top',         -- Prompt at top or bottom
-        reverse = 0,                     -- Set to 1 to reverse list order
-        pumblend = 20,                   -- Transparency (0-100, 0 = opaque)
+    wilder.popupmenu_renderer(wilder.popupmenu_border_theme {
         highlights = {
             border = 'Normal',           -- Border color
             accent = 'WilderAccent',     -- Highlighted item color
         },
+        border = 'rounded',              -- Border style: 'single', 'double', 'rounded'
+        max_height = '20%',              -- Maximum popup height
+        min_height = 0,                  -- Minimum popup height
+        prompt_position = 'top',         -- Prompt at top or bottom of popup
+        reverse = 0,                     -- Set to 1 to reverse list order
         left = { ' ', wilder.popupmenu_devicons() },   -- Left decorations
         right = { ' ', wilder.popupmenu_scrollbar() }, -- Right decorations
     })
 )
 ```
 
-**Theme Options:**
-- `popupmenu_palette_theme` - Centers both input and popup (current setting)
-- `popupmenu_border_theme` - Popup menu only, input stays at bottom
-
 **To customize appearance:**
 - Change `border` style: `'single'`, `'double'`, `'rounded'`, `'solid'`
 - Adjust `max_height` to control popup size (e.g., `'30%'`, `'50%'`)
-- Change `prompt_position` to `'bottom'` to move input to bottom
-- Adjust `pumblend` for transparency (0 = opaque, 100 = fully transparent)
-- Modify highlight colors (line 60)
+- Change `prompt_position` to `'bottom'` to show newest items first
+- Modify highlight colors (line 57)
 
-#### 5. Custom Highlights (Line 64)
+#### 4. Custom Highlights (Line 57)
 
 ```lua
 vim.api.nvim_set_hl(0, 'WilderAccent', { fg = '#5ea1ff' })
@@ -256,7 +234,7 @@ vim.api.nvim_set_hl(0, 'WilderAccent', { fg = '#5ea1ff' })
 
 ### Example 1: Use Ctrl+N/P for Navigation
 
-Edit `lua/plugins/ui/wilder.lua`, line 18-19:
+Edit `lua/plugins/ui/wilder.lua`, lines 19-20:
 
 ```lua
 wilder.setup {
@@ -338,18 +316,6 @@ Wilder also completes file paths:
 ---
 
 ## Troubleshooting
-
-### Two Menus Showing (Native + Wilder)
-
-**Problem:** Seeing two completion menus - one at bottom left, one centered
-
-**Solution:** Make sure wildmenu is disabled in the configuration (lines 15-17):
-```lua
-vim.opt.wildmenu = false
-vim.opt.wildmode = ''
-```
-
-If you added this but still see two menus, restart Neovim.
 
 ### Popup Not Showing
 

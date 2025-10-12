@@ -1,5 +1,5 @@
 -- Wilder.nvim: Better command-line with fuzzy completion
--- Shows command-line in center of screen with popup completion
+-- Shows popup menu above command-line at bottom
 -- Repository: https://github.com/gelguy/wilder.nvim
 
 return {
@@ -11,10 +11,6 @@ return {
 	-- Wilder will work fine without it for basic fuzzy completion
 	config = function()
 		local wilder = require 'wilder'
-
-		-- Disable native wildmenu to prevent conflicts with wilder
-		vim.opt.wildmenu = false
-		vim.opt.wildmode = ''
 
 		-- Enable wilder
 		wilder.setup {
@@ -39,22 +35,19 @@ return {
 			),
 		})
 
-		-- Popup menu with palette (centered command-line)
+		-- Popup menu renderer (command-line stays at bottom)
 		wilder.set_option(
 			'renderer',
-			wilder.popupmenu_renderer(wilder.popupmenu_palette_theme {
-				-- Palette theme centers the command-line and popup together
+			wilder.popupmenu_renderer(wilder.popupmenu_border_theme {
+				highlights = {
+					border = 'Normal', -- Highlight for border
+					accent = 'WilderAccent', -- Highlight for selected item
+				},
 				border = 'rounded', -- 'single', 'double', 'rounded' or 'solid'
 				max_height = '20%', -- Max height of the popup menu
 				min_height = 0, -- Minimum height
 				prompt_position = 'top', -- 'top' or 'bottom'
 				reverse = 0, -- Set to 1 to reverse the order of the list
-				pumblend = 20, -- Transparency (0-100, 0 = opaque)
-				highlights = {
-					border = 'Normal', -- Highlight for border
-					accent = 'WilderAccent', -- Highlight for selected item
-				},
-				-- Decorations
 				left = { ' ', wilder.popupmenu_devicons() },
 				right = { ' ', wilder.popupmenu_scrollbar() },
 			})
