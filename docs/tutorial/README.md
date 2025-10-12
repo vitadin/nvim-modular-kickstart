@@ -65,6 +65,8 @@ skill. No overwhelming 500+ line documents!
 21. [**Custom Keymaps**](./09-custom-keymaps.md) - Creating your own shortcuts
 22. [**Plugin Management**](./10-plugin-management.md) - Adding, removing,
     configuring plugins
+23. [**Wilder Command Line**](./11-wilder-command-line.md) - Enhanced command-line
+    with fuzzy completion and popup menu
 
 ## Quick Start: Jump to What You Need
 
@@ -79,6 +81,7 @@ skill. No overwhelming 500+ line documents!
 - **Search all file contents** → [Telescope Live Grep](./08-telescope-live-grep.md)
 - **See all matches at once** → [Search Current Buffer](./08-telescope-search-current-buffer.md)
 - **Switch files fast** → [Recent Files](./08-telescope-recent-files.md)
+- **Better command-line** → [Wilder Command Line](./11-wilder-command-line.md)
 
 ## Quick Reference
 
@@ -88,6 +91,7 @@ skill. No overwhelming 500+ line documents!
 - **Leap.nvim**: `s` (leap forward), `S` (leap backward), `gs` (leap windows)
 - **Oil.nvim**: `-` (file manager), `<Space>-` (floating window)
 - **Telescope**: `<leader>sf` (search files), `<leader>sg` (live grep)
+- **Wilder**: `:` (command mode with popup), `<Tab>` (next suggestion)
 - **LSP**: `grd` (definition), `grr` (references), `grn` (rename)
 - **Git**: `]c` / `[c` (next/prev change), `<leader>hs` (stage hunk)
 - **Bookmarks**: `<tab><tab>` (toggle bookmark)

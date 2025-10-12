@@ -35,20 +35,22 @@ return {
 			),
 		})
 
-		-- Popup menu renderer with centered position
+		-- Popup menu with palette (centered command-line)
 		wilder.set_option(
 			'renderer',
-			wilder.popupmenu_renderer(wilder.popupmenu_border_theme {
-				highlights = {
-					border = 'Normal', -- Highlight for border
-					accent = 'WilderAccent', -- Highlight for selected item
-				},
+			wilder.popupmenu_renderer(wilder.popupmenu_palette_theme {
+				-- Palette theme centers the command-line and popup together
 				border = 'rounded', -- 'single', 'double', 'rounded' or 'solid'
 				max_height = '20%', -- Max height of the popup menu
 				min_height = 0, -- Minimum height
 				prompt_position = 'top', -- 'top' or 'bottom'
 				reverse = 0, -- Set to 1 to reverse the order of the list
-				-- Position the popup in center of screen
+				pumblend = 20, -- Transparency (0-100, 0 = opaque)
+				highlights = {
+					border = 'Normal', -- Highlight for border
+					accent = 'WilderAccent', -- Highlight for selected item
+				},
+				-- Decorations
 				left = { ' ', wilder.popupmenu_devicons() },
 				right = { ' ', wilder.popupmenu_scrollbar() },
 			})
