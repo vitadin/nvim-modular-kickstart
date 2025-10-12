@@ -4,16 +4,21 @@
 return {
 	'echasnovski/mini.nvim',
 	config = function()
-		-- Simple and easy statusline.
-		-- You could remove this setup call if you don't like it,
-		-- and try some other statusline plugin
+		-- Simple and easy statusline with mode indicator
+		--
+		-- Shows current mode (NORMAL, INSERT, VISUAL, etc.) on the left
 		local statusline = require 'mini.statusline'
-		-- set use_icons to true if you have a Nerd Font
-		statusline.setup { use_icons = vim.g.have_nerd_font }
+		statusline.setup {
+			use_icons = vim.g.have_nerd_font,
+			-- Default content shows:
+			-- - Mode name (NORMAL/INSERT/VISUAL/etc.) on the left
+			-- - Git branch and diff stats
+			-- - Diagnostics (errors, warnings)
+			-- - File info (filename, modified status)
+			-- - Location (line:column) on the right
+		}
 
-		-- You can configure sections in the statusline by overriding their
-		-- default behavior. For example, here we set the section for
-		-- cursor location to LINE:COLUMN
+		-- Customize the location section to show LINE:COLUMN
 		---@diagnostic disable-next-line: duplicate-set-field
 		statusline.section_location = function()
 			return '%2l:%-2v'

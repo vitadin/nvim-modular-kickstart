@@ -19,6 +19,9 @@ return {
 		-- - sr)'  - [S]urround [R]eplace [)] [']
 		require('mini.surround').setup()
 
+		-- NOTE: Statusline is configured in lua/plugins/ui/statusline.lua
+		-- to avoid duplication and keep UI-related configs in one place
+
 		-- ... and there is more!
 		--  Check out: https://github.com/echasnovski/mini.nvim
 	end,
