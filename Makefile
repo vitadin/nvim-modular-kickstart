@@ -129,9 +129,10 @@ test-integration:
 	@echo "Neovim will start and exit automatically after 10 seconds..."
 	@echo ""
 	@sleep 2
+	@echo "Capturing output to /tmp/nvim-modular-test.log..."
 	@NVIM_APPNAME=nvim-modular timeout 10s nvim --headless \
 		+'autocmd User LazyDone sleep 3000m | quitall' \
-		2>&1 || { \
+		> /tmp/nvim-modular-test.log 2>&1 || { \
 			EXIT_CODE=$$?; \
 			if [ $$EXIT_CODE -eq 124 ]; then \
 				echo ""; \
@@ -146,11 +147,30 @@ test-integration:
 			fi; \
 		}
 	@echo ""
-	@echo "Step 4/4: Checking for error logs..."
+	@echo "Step 4/4: Checking for errors in startup output..."
+	@if [ -f /tmp/nvim-modular-test.log ]; then \
+		if grep -iE "error|failed|module.*not found|E[0-9]+:|Vim\(.*\):" /tmp/nvim-modular-test.log >/dev/null 2>&1; then \
+			echo "✗ Errors found in startup output:"; \
+			echo ""; \
+			grep -iE "error|failed|module.*not found|E[0-9]+:|Vim\(.*\):" /tmp/nvim-modular-test.log | head -n 20; \
+			echo ""; \
+			echo "Full output: /tmp/nvim-modular-test.log"; \
+			echo ""; \
+			echo "To debug manually, run:"; \
+			echo "  NVIM_APPNAME=nvim-modular nvim"; \
+			exit 1; \
+		else \
+			echo "✓ No errors found in startup output"; \
+		fi; \
+	else \
+		echo "⚠️  Warning: No test log file found"; \
+	fi
+	@echo ""
+	@echo "Checking for errors in Neovim log file..."
 	@if [ -f ~/.local/state/nvim-modular/log ]; then \
-		if grep -i "error\|failed" ~/.local/state/nvim-modular/log >/dev/null 2>&1; then \
+		if grep -iE "error|failed|E[0-9]+:" ~/.local/state/nvim-modular/log >/dev/null 2>&1; then \
 			echo "⚠️  Errors found in log file:"; \
-			grep -i "error\|failed" ~/.local/state/nvim-modular/log | head -n 10; \
+			grep -iE "error|failed|E[0-9]+:" ~/.local/state/nvim-modular/log | head -n 10; \
 			echo ""; \
 			echo "Full log: ~/.local/state/nvim-modular/log"; \
 		else \

@@ -4,6 +4,11 @@
 
 return {
 	'gelguy/wilder.nvim',
+	dependencies = {
+		'romgrk/fzy-lua-native', -- Fuzzy matching engine
+	},
+	-- Note: build command removed because it causes issues in headless testing
+	-- Wilder will work fine without it for basic fuzzy completion
 	config = function()
 		local wilder = require 'wilder'
 
@@ -17,10 +22,10 @@ return {
 			reject_key = '<Up>',
 		}
 
-		-- Set up the appearance
+		-- Set up the appearance with fuzzy filtering
 		wilder.set_option('pipeline', {
 			wilder.branch(
-				-- For commands, use cmdline pipeline
+				-- For commands, use cmdline pipeline with fuzzy matching
 				wilder.cmdline_pipeline {
 					fuzzy = 1,
 					fuzzy_filter = wilder.lua_fzy_filter(),
