@@ -12,6 +12,10 @@ return {
 	config = function()
 		local wilder = require 'wilder'
 
+		-- Disable native wildmenu to prevent conflicts with wilder
+		vim.opt.wildmenu = false
+		vim.opt.wildmode = ''
+
 		-- Enable wilder
 		wilder.setup {
 			modes = { ':', '/', '?' },

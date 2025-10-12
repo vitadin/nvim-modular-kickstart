@@ -157,7 +157,21 @@ lua/plugins/ui/wilder.lua
 
 ### Key Configuration Sections
 
-#### 1. Basic Setup (Lines 15-23)
+#### 1. Disabling Native Wildmenu (Lines 15-17)
+
+```lua
+-- Disable native wildmenu to prevent conflicts with wilder
+vim.opt.wildmenu = false
+vim.opt.wildmode = ''
+```
+
+**Why this is needed:**
+- Neovim has a native command-line completion menu (wildmenu)
+- Without disabling it, you'll see TWO menus: native (bottom left) and wilder (center)
+- Tab key would control the native menu, not wilder's
+- Disabling wildmenu ensures only wilder's centered popup is shown
+
+#### 2. Basic Setup (Lines 19-27)
 
 ```lua
 wilder.setup {
@@ -174,7 +188,7 @@ wilder.setup {
 - Change `previous_key` for previous suggestion
 - Example: Use `<C-n>` and `<C-p>` like you would in completion menus
 
-#### 2. Fuzzy Matching Pipeline (Lines 25-36)
+#### 3. Fuzzy Matching Pipeline (Lines 29-40)
 
 ```lua
 wilder.set_option('pipeline', {
@@ -192,7 +206,7 @@ wilder.set_option('pipeline', {
 - Set `fuzzy = 0` to disable fuzzy matching (exact match only)
 - Change `fuzzy_filter` to use different algorithm
 
-#### 3. Popup Appearance (Lines 38-57)
+#### 4. Popup Appearance (Lines 42-61)
 
 ```lua
 wilder.set_option(
@@ -226,7 +240,7 @@ wilder.set_option(
 - Adjust `pumblend` for transparency (0 = opaque, 100 = fully transparent)
 - Modify highlight colors (line 60)
 
-#### 4. Custom Highlights (Line 60)
+#### 5. Custom Highlights (Line 64)
 
 ```lua
 vim.api.nvim_set_hl(0, 'WilderAccent', { fg = '#5ea1ff' })
@@ -324,6 +338,18 @@ Wilder also completes file paths:
 ---
 
 ## Troubleshooting
+
+### Two Menus Showing (Native + Wilder)
+
+**Problem:** Seeing two completion menus - one at bottom left, one centered
+
+**Solution:** Make sure wildmenu is disabled in the configuration (lines 15-17):
+```lua
+vim.opt.wildmenu = false
+vim.opt.wildmode = ''
+```
+
+If you added this but still see two menus, restart Neovim.
 
 ### Popup Not Showing
 
