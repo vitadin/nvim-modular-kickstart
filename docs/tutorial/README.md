@@ -17,6 +17,7 @@ skill. No overwhelming 500+ line documents!
    - [中文版本](./01-leap-basic-usage.zh.md)
 3. [**Common Workflows**](./01-leap-common-workflows.md) - Real-world usage
    patterns for daily coding
+   - [中文版本](./01-leap-common-workflows.zh.md)
 4. [**Advanced Techniques**](./01-leap-advanced.md) - Power user tips and
    tricks
 
