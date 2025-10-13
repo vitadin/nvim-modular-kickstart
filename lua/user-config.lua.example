@@ -23,6 +23,35 @@ return {
 	latex = false,
 
 	-- ============================================================
+	-- NEOVIDE CONFIGURATION
+	-- ============================================================
+	-- GUI-specific settings (only applies when using Neovide)
+
+	neovide = {
+		-- Font configuration
+		-- Format: "Font Name:hSIZE" (e.g., "Fira Code:h19")
+		-- Common fonts: JetBrainsMono Nerd Font, Fira Code, Hack, Menlo, Monaco
+		-- Leave as nil to use Neovide's default system font
+		font = nil,
+
+		-- Font size (alternative to specifying in font string)
+		-- If set, uses Neovide's default font with your custom size
+		-- Leave as nil to use default size
+		font_size = nil,
+
+		-- Examples:
+		-- Option 1: Specify complete font with size
+		-- font = "JetBrainsMono Nerd Font:h18",
+
+		-- Option 2: Just change size (keeps Neovide's default font)
+		-- font_size = 20,
+
+		-- Option 3: Specify font without size, then override size
+		-- font = "Hack",
+		-- font_size = 16,  -- Uses Hack at size 16
+	},
+
+	-- ============================================================
 	-- FUTURE OPTIONAL FEATURES
 	-- ============================================================
 	-- Add more optional features here as the repository grows

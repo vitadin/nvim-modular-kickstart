@@ -10,20 +10,39 @@ if not vim.g.neovide then
 	return
 end
 
+-- Load user configuration (git-ignored, prevents git pull conflicts)
+local user_config = {}
+local ok, config = pcall(require, 'user-config')
+if ok then
+	user_config = config
+end
+
 -- ============================================================================
 -- Font Configuration
 -- ============================================================================
 
 -- Font family and size
--- Format: "FontName:hSIZE" or "FontName:hSIZE:w700" (with weight)
--- Examples:
---   - "FiraCode Nerd Font:h14"
---   - "JetBrainsMono Nerd Font:h12:w500"
---   - "Cascadia Code:h16"
-vim.o.guifont = 'Fira Code:h19'
--- Alternative fonts (uncomment to try):
--- vim.o.guifont = 'PragmataPro Mono Liga:h21'
--- vim.o.guifont = 'JetBrainsMono Nerd Font:h14'
+-- Default: nil (uses Neovide's default system font)
+-- Can be customized in lua/user-config.lua
+--
+-- If user specifies a font or font_size in user-config.lua, it will be used
+-- Otherwise, Neovide uses its default font (usually system default monospace)
+
+if user_config.neovide then
+	-- If user specified a complete font string
+	if user_config.neovide.font then
+		vim.o.guifont = user_config.neovide.font
+	-- If user only specified font_size, use Neovide default with custom size
+	elseif user_config.neovide.font_size then
+		-- Note: When only size is specified, Neovide will use its default font
+		-- with the specified size. Format: ":hSIZE"
+		vim.o.guifont = string.format(':h%d', user_config.neovide.font_size)
+	end
+	-- If neither is specified, leave guifont unset (Neovide uses its default)
+end
+
+-- If guifont is still not set, it means user didn't configure anything
+-- Neovide will use its own default font
 
 -- Line spacing (padding between lines)
 -- Higher values = more vertical spacing

@@ -94,6 +94,38 @@ return {
 - Non-LaTeX users never see LaTeX features
 - Repository can update VimTeX/texlab config without user conflicts
 
+### Neovide Font Customization
+
+**Configuration:**
+```lua
+-- lua/user-config.lua
+return {
+	neovide = {
+		-- Option 1: Specify complete font string
+		font = "JetBrainsMono Nerd Font:h18",
+
+		-- Option 2: Just change the size (keeps Neovide's default font)
+		font_size = 20,
+
+		-- Option 3: Leave both nil to use Neovide's default system font
+		font = nil,
+		font_size = nil,
+	}
+}
+```
+
+**What it controls:**
+- `lua/config/neovide.lua` - Reads `user_config.neovide.font` and `user_config.neovide.font_size`
+- Sets `vim.o.guifont` based on user preference
+- If nothing is specified, Neovide uses its own default font (usually system monospace)
+
+**Benefits:**
+- Font preference saved in git-ignored file
+- Easy to try different fonts without editing repository files
+- Repository updates won't overwrite your font choice
+- Flexible: set full font string, just size, or use system default
+- Respects Neovide's defaults when not configured
+
 ## For Developers: Adding New Optional Features
 
 When adding a new optional feature:
@@ -104,12 +136,18 @@ When adding a new optional feature:
 -- lua/user-config.lua.example
 return {
 	latex = false,
-	markdown_preview = false,  -- NEW FEATURE
+	markdown_preview = false,  -- NEW FEATURE (boolean)
+
+	-- Or for nested configuration:
+	neovide = {
+		font = nil,  -- NEW FEATURE (nested config)
+	},
 }
 ```
 
-### Step 2: Make plugin conditional
+### Step 2: Make plugin/config conditional
 
+**Example 1: Enable/disable a plugin**
 ```lua
 -- lua/plugins/editor/markdown-preview.lua
 
@@ -125,6 +163,26 @@ return {
 	enabled = user_config.markdown_preview or false,
 	-- ... rest of config
 }
+```
+
+**Example 2: Use nested config values**
+```lua
+-- lua/config/neovide.lua
+
+-- Load user configuration
+local user_config = {}
+local ok, config = pcall(require, 'user-config')
+if ok then
+	user_config = config
+end
+
+-- Use nested config with fallback
+local font = 'Fira Code:h19'  -- default
+if user_config.neovide and user_config.neovide.font then
+	font = user_config.neovide.font
+end
+
+vim.o.guifont = font
 ```
 
 ### Step 3: Document in tutorial
