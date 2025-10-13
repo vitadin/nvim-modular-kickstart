@@ -79,7 +79,13 @@ return {
 		},
 
 		sources = {
-			default = { 'lsp', 'path', 'snippets', 'lazydev' },
+			-- Completion sources (order matters for priority)
+			-- 'lsp' - Language server completions (functions, variables, etc.)
+			-- 'path' - File path completions
+			-- 'snippets' - Code snippets
+			-- 'buffer' - Words from current buffer (essential for text files!)
+			-- 'lazydev' - Neovim Lua API completions
+			default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
 			providers = {
 				lazydev = {
 					module = 'lazydev.integrations.blink',
