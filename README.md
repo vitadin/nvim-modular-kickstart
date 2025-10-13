@@ -52,7 +52,13 @@ solid foundation that's easy to customize and maintain.
   - `make test` - Validate Lua syntax
   - `make pre-commit` - Full pre-commit validation
 
-### Code Organization
+#### GUI Support
+- **Neovide Integration** - Full GUI support with custom configuration
+  - Only activates when running in Neovide (terminal users unaffected)
+  - Font, cursor, window, and performance settings
+  - See `lua/config/neovide.lua` for configuration options
+
+## Code Organization
 ```
 kickstart.nvim/
 ├── init.lua                    # Minimal entry point (40 lines)
@@ -61,9 +67,13 @@ kickstart.nvim/
 │   │   ├── options.lua         # Vim settings
 │   │   ├── keymaps.lua         # Key bindings
 │   │   ├── autocmds.lua        # Autocommands
+│   │   ├── neovide.lua         # Neovide GUI settings
 │   │   └── lazy.lua            # Plugin manager setup
 │   ├── lsp/                    # LSP configuration data
-│   │   └── servers.lua         # LSP server definitions
+│   │   ├── servers.lua         # LSP server loader
+│   │   └── servers/            # Individual LSP configs
+│   │       ├── lua_ls.lua      # Lua language server
+│   │       └── clangd.lua      # C/C++ language server
 │   └── plugins/                # Plugin specifications
 │       ├── ui/                 # UI enhancements (colorscheme, statusline)
 │       ├── editor/             # Editor features (telescope, treesitter)
@@ -292,8 +302,35 @@ Lazy.nvim will automatically detect and load it.
 
 - **Vim options**: Edit `lua/config/options.lua`
 - **Key mappings**: Edit `lua/config/keymaps.lua`
-- **LSP servers**: Edit `lua/lsp/servers.lua`
+- **LSP servers**: Add files to `lua/lsp/servers/` (e.g., `clangd.lua`, `pyright.lua`)
 - **Colorscheme**: Edit `lua/plugins/ui/colorscheme.lua`
+- **Neovide**: Edit `lua/config/neovide.lua` (only affects GUI, terminal users unaffected)
+
+### Using with Neovide GUI
+
+This configuration includes full Neovide support that automatically activates when running in Neovide:
+
+```sh
+# Install Neovide (macOS)
+brew install neovide
+
+# Launch with this config
+neovide
+
+# Or specify a file
+neovide ~/myproject/main.c
+```
+
+**What's pre-configured:**
+- Custom font settings (PragmataPro Mono Liga by default)
+- Smooth cursor animations and visual effects
+- Window padding and transparency options
+- macOS-specific key bindings (Cmd+C/V for copy/paste)
+- Markdown rendering fix (disables Treesitter for markdown in Neovide)
+
+**Terminal Neovim users are completely unaffected** - the Neovide configuration only loads when `vim.g.neovide` is true.
+
+See `lua/config/neovide.lua` for all available options and customization.
 
 ### Code Quality Standards
 
