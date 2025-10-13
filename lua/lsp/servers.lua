@@ -1,40 +1,38 @@
--- LSP Server Configurations
--- Enable the following language servers
+-- LSP Server Configurations Entry Point
+-- This file automatically loads all server configurations from lua/lsp/servers/
 --
--- Add any additional override configuration in the following tables. Available keys are:
+-- To add a new LSP server:
+-- 1. Create a new file: lua/lsp/servers/<server_name>.lua
+-- 2. Return a configuration table with server-specific settings
+-- 3. The server will be automatically loaded and installed by Mason
+--
+-- Each server file can contain:
 --  - cmd (table): Override the default command used to start the server
---  - filetypes (table): Override the default list of associated filetypes for the server
---  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
---  - settings (table): Override the default settings passed when initializing the server.
---        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+--  - filetypes (table): Override the default list of associated filetypes
+--  - capabilities (table): Override fields in capabilities
+--  - settings (table): Server-specific settings (e.g., lua_ls settings)
+--  - init_options (table): Initialization options passed to the server
 --
--- See `:help lspconfig-all` for a list of all the pre-configured LSPs
+-- See `:help lspconfig-all` for a list of all available LSP servers
+-- See existing files in lua/lsp/servers/ for examples
 
-return {
-	-- clangd = {},
-	-- gopls = {},
-	-- pyright = {},
-	-- rust_analyzer = {},
-	-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-	--
-	-- Some languages (like typescript) have entire language plugins that can be useful:
-	--    https://github.com/pmizio/typescript-tools.nvim
-	--
-	-- But for many setups, the LSP (`ts_ls`) will work just fine
-	-- ts_ls = {},
+local M = {}
 
-	lua_ls = {
-		-- cmd = { ... },
-		-- filetypes = { ... },
-		-- capabilities = {},
-		settings = {
-			Lua = {
-				completion = {
-					callSnippet = 'Replace',
-				},
-				-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-				-- diagnostics = { disable = { 'missing-fields' } },
-			},
-		},
-	},
-}
+-- Automatically load all server configs from lua/lsp/servers/
+local servers_path = vim.fn.stdpath 'config' .. '/lua/lsp/servers'
+local server_files = vim.fn.glob(servers_path .. '/*.lua', false, true)
+
+for _, filepath in ipairs(server_files) do
+	local filename = vim.fn.fnamemodify(filepath, ':t:r')
+	local ok, server_config = pcall(require, 'lsp.servers.' .. filename)
+	if ok and server_config then
+		M[filename] = server_config
+	else
+		vim.notify(
+			string.format('Failed to load LSP server config: %s', filename),
+			vim.log.levels.WARN
+		)
+	end
+end
+
+return M
