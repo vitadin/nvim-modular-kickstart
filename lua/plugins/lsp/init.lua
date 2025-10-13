@@ -23,11 +23,18 @@ return {
 						x_padding = 1,
 						y_padding = 1,
 					},
+					-- Override display duration to make notifications more visible
+					override_vim_notify = true,
 				},
 				progress = {
 					display = {
 						done_icon = '✓', -- Icon when task is done
 						progress_icon = { pattern = 'dots', period = 1 }, -- Spinner animation
+						done_ttl = 3, -- How long "done" message stays (seconds)
+						progress_ttl = math.huge, -- Keep progress messages until done
+					},
+					lsp = {
+						progress_ringbuf_size = 128, -- Increase buffer for more messages
 					},
 				},
 			},
