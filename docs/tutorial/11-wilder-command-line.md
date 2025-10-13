@@ -44,9 +44,9 @@ backward), wilder automatically shows a popup menu with suggestions.
 | `<Tab>`       | Move to next suggestion (cycle forward)     |
 | `<Shift-Tab>` | Move to previous suggestion (cycle back)    |
 | `<Enter>`     | Accept highlighted suggestion and execute   |
-| `<Down>`      | Accept suggestion                           |
-| `<Up>`        | Reject suggestion                           |
 | `<Esc>`       | Cancel and close popup                      |
+
+**Note:** There's only ONE popup menu from wilder.nvim. If you see two popups, restart Neovim to clear the native wildmenu cache.
 
 ### Navigation Workflow
 
@@ -156,15 +156,19 @@ lua/plugins/ui/wilder.lua
 
 ### Key Configuration Sections
 
-#### 1. Basic Setup (Lines 15-23)
+#### 1. Basic Setup (Lines 15-27)
 
 ```lua
+-- Disable native wildmenu to prevent conflicts
+vim.opt.wildmenu = false
+vim.opt.wildmode = ''
+
 wilder.setup {
     modes = { ':', '/', '?' },     -- Enable for command, search forward/back
     next_key = '<Tab>',            -- Navigate to next suggestion
     previous_key = '<S-Tab>',      -- Navigate to previous suggestion
-    accept_key = '<Down>',         -- Accept suggestion
-    reject_key = '<Up>',           -- Reject suggestion
+    accept_key = '<CR>',           -- Enter to accept
+    reject_key = '<Esc>',          -- Escape to cancel
 }
 ```
 
@@ -316,6 +320,29 @@ Wilder also completes file paths:
 ---
 
 ## Troubleshooting
+
+### Two Popup Windows Appearing (Most Common Issue)
+
+**Problem:** When typing `:` command, you see an initial popup, then pressing `<Tab>` shows a DIFFERENT second popup with more items. This is confusing!
+
+**Root cause:** Neovim's native `wildmenu` is conflicting with wilder.nvim.
+
+**Solution:**
+
+1. **Restart Neovim completely** - The native wildmenu might be cached
+   ```vim
+   :qa
+   ```
+   Then reopen Neovim
+
+2. **Verify wildmenu is disabled** - Check these settings:
+   ```vim
+   :set wildmenu?
+   :set wildmode?
+   ```
+   Both should show they're disabled/empty. If not, the fix in `lua/plugins/ui/wilder.lua` (lines 15-17) needs to be applied.
+
+3. **After restart:** You should only see ONE popup menu from wilder.nvim when typing commands.
 
 ### Popup Not Showing
 

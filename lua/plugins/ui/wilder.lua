@@ -12,14 +12,18 @@ return {
 	config = function()
 		local wilder = require 'wilder'
 
+		-- Disable native wildmenu to prevent conflicts with wilder
+		vim.opt.wildmenu = false
+		vim.opt.wildmode = ''
+
 		-- Enable wilder
 		wilder.setup {
 			modes = { ':', '/', '?' },
-			-- Enable fuzzy matching
+			-- Tab should cycle through suggestions, not trigger completion
 			next_key = '<Tab>',
 			previous_key = '<S-Tab>',
-			accept_key = '<Down>',
-			reject_key = '<Up>',
+			accept_key = '<CR>', -- Enter to accept
+			reject_key = '<Esc>', -- Escape to cancel
 		}
 
 		-- Set up the appearance with fuzzy filtering
