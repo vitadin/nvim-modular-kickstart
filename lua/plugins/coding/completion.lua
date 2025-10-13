@@ -85,18 +85,10 @@ return {
 			-- 'path' - File path completions
 			-- 'snippets' - Code snippets
 			-- 'buffer' - Words from current buffer (essential for text files!)
-			-- 'lazydev' - Neovim Lua API completions (only for Lua files)
+			--
+			-- Note: lazydev integration removed to avoid plugin loading issues
+			-- Lua LSP (lua_ls) already provides Neovim API completions through the LSP source
 			default = { 'lsp', 'path', 'snippets', 'buffer' },
-			-- Enable lazydev only for Lua files
-			per_filetype = {
-				lua = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
-			},
-			providers = {
-				lazydev = {
-					module = 'lazydev.integrations.blink',
-					score_offset = 100,
-				},
-			},
 		},
 
 		snippets = { preset = 'luasnip' },
