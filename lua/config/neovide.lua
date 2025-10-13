@@ -108,7 +108,7 @@ vim.g.neovide_input_use_logo = true
 -- macOS-specific: Use Option (Alt) as Meta key
 -- When true: Option acts like Alt in terminal Neovim
 -- When false: Option produces special characters (e.g., Option+e = ´)
-vim.g.neovide_input_macos_alt_is_meta = true
+vim.g.neovide_input_macos_option_key_is_meta = true
 
 -- ============================================================================
 -- Performance Configuration
