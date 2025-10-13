@@ -11,7 +11,27 @@ return {
 		'WhoIsSethDaniel/mason-tool-installer.nvim',
 
 		-- Useful status updates for LSP.
-		{ 'j-hui/fidget.nvim', opts = {} },
+		-- Shows LSP progress notifications in bottom-right corner
+		{
+			'j-hui/fidget.nvim',
+			opts = {
+				notification = {
+					window = {
+						winblend = 0, -- Background transparency (0 = opaque, 100 = transparent)
+						relative = 'editor', -- Position relative to editor
+						align = 'bottom', -- Align to bottom of editor
+						x_padding = 1,
+						y_padding = 1,
+					},
+				},
+				progress = {
+					display = {
+						done_icon = '✓', -- Icon when task is done
+						progress_icon = { pattern = 'dots', period = 1 }, -- Spinner animation
+					},
+				},
+			},
+		},
 
 		-- Allows extra capabilities provided by blink.cmp
 		'saghen/blink.cmp',
