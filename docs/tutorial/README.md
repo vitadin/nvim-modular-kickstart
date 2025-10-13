@@ -68,6 +68,11 @@ skill. No overwhelming 500+ line documents!
 23. [**Wilder Command Line**](./11-wilder-command-line.md) - Enhanced command-line
     with fuzzy completion and popup menu
 
+### Optional Features
+
+24. [**LaTeX Setup and Usage**](./12-latex-setup.md) - Writing academic papers and
+    documents with LaTeX support (disabled by default)
+
 ## Quick Start: Jump to What You Need
 
 ### I want to...
@@ -82,6 +87,7 @@ skill. No overwhelming 500+ line documents!
 - **See all matches at once** → [Search Current Buffer](./08-telescope-search-current-buffer.md)
 - **Switch files fast** → [Recent Files](./08-telescope-recent-files.md)
 - **Better command-line** → [Wilder Command Line](./11-wilder-command-line.md)
+- **Write LaTeX documents** → [LaTeX Setup and Usage](./12-latex-setup.md)
 
 ## Quick Reference
 

@@ -52,6 +52,14 @@ solid foundation that's easy to customize and maintain.
   - `make test` - Validate Lua syntax
   - `make pre-commit` - Full pre-commit validation
 
+### Optional Features (Disabled by Default)
+
+- **LaTeX Support** - Complete LaTeX IDE with VimTeX and texlab LSP
+  - Real-time compilation and PDF preview
+  - Forward/backward search (SyncTeX)
+  - Autocompletion for citations and references
+  - See [LaTeX Setup Guide](docs/latex-setup.md) for activation instructions
+
 #### GUI Support
 - **Neovide Integration** - Full GUI support with custom configuration
   - Only activates when running in Neovide (terminal users unaffected)
