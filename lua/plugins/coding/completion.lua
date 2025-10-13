@@ -32,7 +32,8 @@ return {
 			},
 			opts = {},
 		},
-		'folke/lazydev.nvim',
+		-- Note: lazydev.nvim is configured separately in lua/plugins/lsp/lazydev.lua
+		-- It loads on ft = 'lua' to provide Lua LSP completions for Neovim config
 	},
 	--- @module 'blink.cmp'
 	--- @type blink.cmp.Config
@@ -84,8 +85,12 @@ return {
 			-- 'path' - File path completions
 			-- 'snippets' - Code snippets
 			-- 'buffer' - Words from current buffer (essential for text files!)
-			-- 'lazydev' - Neovim Lua API completions
-			default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
+			-- 'lazydev' - Neovim Lua API completions (only for Lua files)
+			default = { 'lsp', 'path', 'snippets', 'buffer' },
+			-- Enable lazydev only for Lua files
+			per_filetype = {
+				lua = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
+			},
 			providers = {
 				lazydev = {
 					module = 'lazydev.integrations.blink',
