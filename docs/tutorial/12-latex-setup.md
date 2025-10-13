@@ -125,6 +125,12 @@ Look for `texlab` in the list - it should show as installed.
 
 ## Your First LaTeX Document
 
+**⚠️ PREREQUISITE CHECK:** Before proceeding, you MUST have completed the "Enable LaTeX Support" section above. If you haven't enabled VimTeX yet (changed `enabled = false` to `enabled = true`), the commands below will NOT work.
+
+**Quick check:** Open Neovim and run `:echo g:vimtex_enabled` in normal mode. It should return `1`. If it returns `0` or an error, go back to the "Enable LaTeX Support" section.
+
+---
+
 Let's create a simple document to test the setup.
 
 ### Create a Test File
@@ -167,21 +173,30 @@ The quadratic formula is:
 
 ### Compile and View
 
-1. **Start compilation** (in normal mode):
-   ```
-   \ll
-   ```
-   (That's backslash-L-L)
+**Method 1: Using Command-Line (Recommended for beginners)**
 
-   You'll see compilation output at the bottom.
+1. **Start compilation:**
+   ```vim
+   :VimtexCompile
+   ```
+   Press Enter. You'll see compilation output at the bottom.
+
+2. **View the PDF:**
+   ```vim
+   :VimtexView
+   ```
+   Press Enter. Skim (or Zathura) should open showing your PDF!
+
+**Method 2: Using Key Mappings (Faster once you get used to it)**
+
+1. **Start compilation** (in normal mode):
+   - Press `\` (backslash) followed immediately by `ll` (two L's)
+   - Type them quickly - there's a timeout (usually 1 second)
+   - If nothing happens, try `:VimtexCompile` instead
 
 2. **View the PDF**:
-   ```
-   \lv
-   ```
-   (That's backslash-L-V)
-
-   Skim (or Zathura) should open showing your PDF!
+   - Press `\` followed immediately by `lv`
+   - Or use `:VimtexView`
 
 **Success!** You just compiled your first LaTeX document in Neovim.
 
@@ -326,9 +341,24 @@ Press `<C-n>` - you should see `sec:intro` suggested!
 
 ### Compilation Commands
 
-All commands use `\` (backslash) as leader:
+**Command-Line Version (always works):**
 
 | Command | Action |
+|---------|--------|
+| `:VimtexCompile` | Start/stop continuous compilation |
+| `:VimtexStop` | Stop compilation |
+| `:VimtexView` | View PDF (forward search) |
+| `:VimtexClean` | Clean auxiliary files (.aux, .log, etc.) |
+| `:VimtexErrors` | Show errors in quickfix window |
+| `:VimtexToc` | Open table of contents |
+| `:VimtexStatus` | Show compilation status |
+| `:VimtexInfo` | Show VimTeX configuration info |
+
+**Key Mapping Version (faster but requires quick typing):**
+
+All mappings use `\` (backslash) as leader - press `\` then the letters quickly:
+
+| Mapping | Action |
 |---------|--------|
 | `\ll` | Start/stop continuous compilation |
 | `\lk` | Stop compilation |
@@ -555,16 +585,45 @@ Opens PDF in split window (macOS specific).
 
 ## Troubleshooting
 
-### Issue 1: `\ll` Does Nothing
+### Issue 1: `\ll` Does Nothing (Most Common Issue)
+
+**Problem:** You press `\ll` in normal mode but nothing happens.
+
+**Root cause:** VimTeX is still disabled (this is the default state).
 
 **Solution:**
+
+**Step 1: Check if VimTeX is enabled**
 ```vim
 :echo g:vimtex_enabled
 ```
-Should show `1`. If not:
-1. Check `enabled = true` in `lua/plugins/editor/vimtex.lua`
-2. Run `:Lazy sync`
-3. Restart Neovim
+
+**If it returns `0` or error:** VimTeX is disabled. You need to enable it:
+
+1. Edit `lua/plugins/editor/vimtex.lua`
+2. Find line ~37: `enabled = false,`
+3. Change it to: `enabled = true,`
+4. Save the file
+5. Restart Neovim
+6. Run `:Lazy sync` to install VimTeX
+7. Open your `.tex` file again and try `\ll`
+
+**If it returns `1`:** VimTeX is enabled. The key mapping might not be working. Try:
+
+1. **Use command-line instead:** Type `:VimtexCompile` and press Enter
+   - If this works, the issue is with the key mapping timeout
+   - Solution: Press `\` and `ll` very quickly (within 1 second)
+
+2. **Check file type:** Run `:set ft?` (should show `tex`)
+   - If not `tex`, rename file to end with `.tex`
+
+3. **Check LaTeX installed:** Run `which pdflatex` in terminal
+   - Should show path like `/usr/local/bin/pdflatex`
+
+4. **Verify mapping exists:** Run `:verbose map \ll`
+   - Should show the VimTeX mapping
+
+**Tip:** If key mappings don't work reliably, just use command-line commands like `:VimtexCompile` - they're more explicit and easier to debug.
 
 ### Issue 2: Autocompletion Doesn't Work
 
