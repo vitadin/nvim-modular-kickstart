@@ -25,13 +25,15 @@ See:  :qa, :qall, :quit (in a popup menu)
 
 ### Starting a Command
 
-When you type `:` (command mode), `/` (search forward), or `?` (search
-backward), wilder automatically shows a popup menu with suggestions.
+When you type `:` (command mode), `/` (search forward), or `?` (search backward), you'll see the command-line at the bottom. **The popup menu only appears when you press `<Tab>`**.
 
 **Try it:**
 1. Press `:` to enter command mode
-2. Type `q` - See all commands starting with 'q'
-3. Type more letters to narrow down: `qu` → shows :quit, :quitall, etc.
+2. Type `q` (no popup yet - this is normal!)
+3. Press `<Tab>` - NOW the popup appears with suggestions like :quit, :qa, :qall
+4. Type more letters to narrow down: `qu<Tab>` → shows :quit, :quitall, etc.
+
+**Important:** The popup is **triggered by Tab**, not by just typing. This gives you control over when you want to see suggestions.
 
 ---
 
@@ -53,24 +55,32 @@ backward), wilder automatically shows a popup menu with suggestions.
 **Example 1: Selecting from suggestions**
 ```
 1. Type :q
-2. Popup shows: :q, :qa, :qall, :quit
-3. Press <Tab> to highlight :qa
+2. Press <Tab> - Popup shows: :q, :qa, :qall, :quit
+3. Press <Tab> again to highlight next item (:qa)
 4. Press <Enter> to execute :qa
 ```
 
-**Example 2: Quick execution**
+**Example 2: Quick execution (no popup needed)**
 ```
 1. Type :wq
-2. Press <Enter> immediately (no need to select)
+2. Press <Enter> immediately (no need to open popup)
 ```
 
 **Example 3: Cycle through options**
 ```
 1. Type :buf
-2. Press <Tab> → :buffer
-3. Press <Tab> → :buffers
-4. Press <Tab> → :buffer!
+2. Press <Tab> - Popup opens with :buffer, :buffers, :buffer!, etc.
+3. Press <Tab> again → highlights :buffers
+4. Press <Tab> again → highlights :buffer!
 5. Press <Enter> when you find the right one
+```
+
+**Example 4: Fuzzy search workflow**
+```
+1. Type :vs (want :vsplit)
+2. Press <Tab> - Shows :vsplit, :vscmd, :visual
+3. First item (:vsplit) is already highlighted
+4. Press <Enter> to execute :vsplit
 ```
 
 ---
@@ -156,7 +166,7 @@ lua/plugins/ui/wilder.lua
 
 ### Key Configuration Sections
 
-#### 1. Basic Setup (Lines 15-27)
+#### 1. Basic Setup (Lines 15-29)
 
 ```lua
 -- Disable native wildmenu to prevent conflicts
@@ -169,8 +179,11 @@ wilder.setup {
     previous_key = '<S-Tab>',      -- Navigate to previous suggestion
     accept_key = '<CR>',           -- Enter to accept
     reject_key = '<Esc>',          -- Escape to cancel
+    enable_cmdline_enter = 0,      -- Don't show popup on :, only on Tab
 }
 ```
+
+**Key setting:** `enable_cmdline_enter = 0` means the popup only appears when you press Tab, not automatically when you type `:`. This prevents the "two popup" confusion.
 
 **To customize key bindings:**
 - Change `next_key` to use a different key for next suggestion
@@ -323,26 +336,38 @@ Wilder also completes file paths:
 
 ### Two Popup Windows Appearing (Most Common Issue)
 
-**Problem:** When typing `:` command, you see an initial popup, then pressing `<Tab>` shows a DIFFERENT second popup with more items. This is confusing!
+**Problem:** When typing `:` command, you see a small initial popup, then pressing `<Tab>` shows a DIFFERENT larger popup with more items. This is confusing!
 
-**Root cause:** Neovim's native `wildmenu` is conflicting with wilder.nvim.
+**Root cause:** Either native `wildmenu` is conflicting, OR wilder is showing an auto-popup that you don't want.
 
 **Solution:**
 
-1. **Restart Neovim completely** - The native wildmenu might be cached
+1. **Check the configuration** - Ensure `enable_cmdline_enter = 0` is set:
+   ```vim
+   " Open the config
+   :e lua/plugins/ui/wilder.lua
+   " Look for line 28: enable_cmdline_enter = 0
+   ```
+   This disables the auto-popup on `:`, so popup only appears when you press Tab.
+
+2. **Restart Neovim completely**:
    ```vim
    :qa
    ```
    Then reopen Neovim
 
-2. **Verify wildmenu is disabled** - Check these settings:
+3. **Verify wildmenu is disabled**:
    ```vim
    :set wildmenu?
    :set wildmode?
    ```
-   Both should show they're disabled/empty. If not, the fix in `lua/plugins/ui/wilder.lua` (lines 15-17) needs to be applied.
+   Both should show `nowildmenu` and empty `wildmode`.
 
-3. **After restart:** You should only see ONE popup menu from wilder.nvim when typing commands.
+4. **Expected behavior after fix:**
+   - Type `:` → No popup (just command-line)
+   - Type `:q` → Still no popup (just text on command-line)
+   - Press `<Tab>` → NOW popup appears with suggestions
+   - Press `<Tab>` again → Cycles through suggestions in SAME popup
 
 ### Popup Not Showing
 

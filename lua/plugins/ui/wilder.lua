@@ -24,6 +24,8 @@ return {
 			previous_key = '<S-Tab>',
 			accept_key = '<CR>', -- Enter to accept
 			reject_key = '<Esc>', -- Escape to cancel
+			-- Don't show popup automatically, only after pressing Tab
+			enable_cmdline_enter = 0,
 		}
 
 		-- Set up the appearance with fuzzy filtering
