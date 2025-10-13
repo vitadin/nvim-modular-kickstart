@@ -22,12 +22,10 @@ return {
 	build = ':TSUpdate',
 	main = 'nvim-treesitter.configs', -- Sets main module to use for opts
 
-	-- For development Neovim (0.11+), use the main branch for latest compatibility
-	-- Comment this out if using stable Neovim 0.10.x
-	branch = 'main',
-
-	-- Or pin to a stable version for production use:
-	-- commit = 'v0.9.2',  -- Uncomment to pin to a specific version
+	-- Let Lazy.nvim use the default branch (master) for better compatibility
+	-- Uncomment below ONLY if you have specific version issues:
+	-- branch = 'main',  -- For bleeding-edge Neovim (0.11+)
+	-- commit = 'v0.9.2',  -- For pinning to a stable version
 
 	opts = {
 		ensure_installed = {
@@ -117,11 +115,26 @@ return {
 		-- Setup treesitter with error handling
 		local ok, ts_configs = pcall(require, 'nvim-treesitter.configs')
 		if not ok then
-			vim.notify('Failed to load nvim-treesitter', vim.log.levels.ERROR)
+			vim.notify(
+				'Failed to load nvim-treesitter. Try:\n' ..
+				'1. :Lazy sync\n' ..
+				'2. Restart Neovim\n' ..
+				'3. :TSUpdate',
+				vim.log.levels.ERROR,
+				{ title = 'Treesitter Error' }
+			)
 			return
 		end
 
-		ts_configs.setup(opts)
+		-- Setup with another layer of error handling
+		local setup_ok, setup_err = pcall(ts_configs.setup, opts)
+		if not setup_ok then
+			vim.notify(
+				'Treesitter setup failed: ' .. tostring(setup_err),
+				vim.log.levels.ERROR
+			)
+			return
+		end
 
 		-- Workaround for query predicate compatibility issues
 		-- Overrides problematic predicates that may call undefined methods
