@@ -118,26 +118,25 @@ return {
 		}
 
 		-- Setup mason-lspconfig with handlers
-		-- Note: We explicitly disable automatic_enable to avoid
-		-- compatibility issues with Neovim 0.10.x
+		-- This bridges mason and lspconfig, ensuring installed servers are configured
 		require('mason-lspconfig').setup {
-			-- Disable automatic_enable feature (incompatible with Neovim
-			-- 0.10.x). We handle server setup manually via handlers.
-			automatic_enable = false,
-			-- Manually register handlers for server setup
+			-- Ensure these servers are installed (mason will install them)
+			ensure_installed = vim.tbl_keys(servers or {}),
+			-- Automatically setup servers using handlers
+			automatic_installation = true,
+			-- Register handlers for server setup
 			handlers = {
+				-- Default handler for all servers
 				function(server_name)
 					local server = servers[server_name] or {}
-					-- This handles overriding only values explicitly passed
-					-- by the server configuration above. Useful when
-					-- disabling certain features of an LSP (for example,
-					-- turning off formatting for ts_ls)
+					-- Merge capabilities from blink.cmp with server-specific capabilities
 					server.capabilities = vim.tbl_deep_extend(
 						'force',
 						{},
 						capabilities,
 						server.capabilities or {}
 					)
+					-- Setup the LSP server with lspconfig
 					require('lspconfig')[server_name].setup(server)
 				end,
 			},
