@@ -6,9 +6,9 @@
 -- See installation instructions below before enabling
 --
 -- To enable LaTeX support:
--- 1. Install system dependencies (see below)
--- 2. Change 'enabled = false' to 'enabled = true' (line 30)
--- 3. Enable texlab LSP: rename lua/lsp/servers/texlab.lua.disabled to texlab.lua
+-- 1. Copy config: cp lua/user-config.lua.example lua/user-config.lua
+-- 2. Edit lua/user-config.lua and set latex = true
+-- 3. Install system dependencies (see below)
 -- 4. Restart Neovim and run :Lazy sync
 --
 -- Required System Dependencies:
@@ -31,10 +31,17 @@
 -- - Table of contents navigation
 -- - Bibliography support
 
+-- Load user configuration (git-ignored, prevents git pull conflicts)
+local user_config = {}
+local ok, config = pcall(require, 'user-config')
+if ok then
+	user_config = config
+end
+
 return {
 	'lervag/vimtex',
-	-- DISABLED BY DEFAULT - Change to 'enabled = true' to activate
-	enabled = false,
+	-- Controlled by lua/user-config.lua (set latex = true to enable)
+	enabled = user_config.latex or false,
 
 	-- Only load for LaTeX files (no impact on other file types)
 	ft = { 'tex', 'bib' },

@@ -65,38 +65,42 @@ sudo pacman -S zathura zathura-pdf-mupdf
 
 ## Enable LaTeX Support
 
-### Step 1: Enable VimTeX Plugin
+**🎉 NEW GIT-PULL SAFE APPROACH:** LaTeX support is now controlled by a user configuration file (`lua/user-config.lua`) that is **git-ignored**. This means you can safely `git pull` repository updates without conflicts!
 
-Edit the file: `lua/plugins/editor/vimtex.lua`
+### Step 1: Create Your User Configuration
 
-Find line 30 and change:
+Copy the example configuration file:
+
+```bash
+# If using default Neovim config location
+cd ~/.config/nvim
+cp lua/user-config.lua.example lua/user-config.lua
+
+# OR if using NVIM_APPNAME=nvim-modular
+cd ~/.config/nvim-modular
+cp lua/user-config.lua.example lua/user-config.lua
+```
+
+### Step 2: Enable LaTeX in User Config
+
+Edit the `lua/user-config.lua` file you just created:
+
 ```lua
--- Before:
-enabled = false,
-
--- After:
-enabled = true,
+return {
+	-- LaTeX Support (VimTeX + texlab LSP)
+	-- Provides: LaTeX editing, compilation, PDF preview with SyncTeX
+	-- Prerequisites: LaTeX distribution + Skim (macOS) or Zathura (Linux)
+	latex = true,  -- Change from false to true
+}
 ```
 
 **Save the file** and close your editor.
 
-### Step 2: Enable texlab LSP
-
-Rename the LSP configuration file to activate it:
-
-```bash
-# Navigate to LSP servers directory
-cd ~/.config/nvim/lua/lsp/servers
-
-# Rename to remove .disabled suffix
-mv texlab.lua.disabled texlab.lua
-```
-
-If using `NVIM_APPNAME=nvim-modular`:
-```bash
-cd ~/.config/nvim-modular/lua/lsp/servers
-mv texlab.lua.disabled texlab.lua
-```
+**Why this approach?**
+- `lua/user-config.lua` is in `.gitignore` - git never tracks it
+- You can `git pull` anytime without merge conflicts
+- Repository updates won't overwrite your settings
+- Clean separation between repo code and personal preferences
 
 ### Step 3: Restart Neovim and Sync Plugins
 
@@ -121,13 +125,19 @@ Check that texlab LSP server installed:
 
 Look for `texlab` in the list - it should show as installed.
 
+**Verify VimTeX is enabled:**
+```vim
+:echo g:vimtex_enabled
+```
+Should return `1`.
+
 ---
 
 ## Your First LaTeX Document
 
-**⚠️ PREREQUISITE CHECK:** Before proceeding, you MUST have completed the "Enable LaTeX Support" section above. If you haven't enabled VimTeX yet (changed `enabled = false` to `enabled = true`), the commands below will NOT work.
+**⚠️ PREREQUISITE CHECK:** Before proceeding, you MUST have completed the "Enable LaTeX Support" section above. If you haven't created `lua/user-config.lua` and set `latex = true`, the commands below will NOT work.
 
-**Quick check:** Open Neovim and run `:echo g:vimtex_enabled` in normal mode. It should return `1`. If it returns `0` or an error, go back to the "Enable LaTeX Support" section.
+**Quick check:** Open Neovim and run `:echo g:vimtex_enabled` in normal mode. It should return `1`. If it returns `0` or an error, go back to the "Enable LaTeX Support" section and create your user config file.
 
 ---
 
@@ -600,13 +610,15 @@ Opens PDF in split window (macOS specific).
 
 **If it returns `0` or error:** VimTeX is disabled. You need to enable it:
 
-1. Edit `lua/plugins/editor/vimtex.lua`
-2. Find line ~37: `enabled = false,`
-3. Change it to: `enabled = true,`
-4. Save the file
-5. Restart Neovim
-6. Run `:Lazy sync` to install VimTeX
-7. Open your `.tex` file again and try `\ll`
+1. Check if `lua/user-config.lua` exists
+   - If NO: `cp lua/user-config.lua.example lua/user-config.lua`
+2. Edit `lua/user-config.lua`
+3. Find the line: `latex = false,`
+4. Change it to: `latex = true,`
+5. Save the file
+6. Restart Neovim
+7. Run `:Lazy sync` to install VimTeX
+8. Open your `.tex` file again and try `\ll`
 
 **If it returns `1`:** VimTeX is enabled. The key mapping might not be working. Try:
 
@@ -632,9 +644,10 @@ Opens PDF in split window (macOS specific).
 :LspInfo
 ```
 Should show `texlab` attached. If not:
-1. Check `texlab.lua` exists (not `.disabled`)
+1. Verify LaTeX is enabled in `lua/user-config.lua` (`latex = true`)
 2. Run `:Mason` and verify texlab installed
 3. Run `:LspRestart`
+4. Reopen the `.tex` file
 
 ### Issue 3: PDF Viewer Doesn't Open
 

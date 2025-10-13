@@ -1,0 +1,33 @@
+-- User Configuration File
+-- This file contains YOUR personal settings for optional features.
+-- It is NOT tracked by git, so you can safely git pull without conflicts.
+--
+-- SETUP INSTRUCTIONS:
+-- 1. Copy this file: cp lua/user-config.lua.example lua/user-config.lua
+-- 2. Edit lua/user-config.lua to enable/disable features
+-- 3. Restart Neovim
+--
+-- The lua/user-config.lua file will be ignored by git, so your settings
+-- are preserved when you update the repository with 'git pull'.
+
+return {
+	-- ============================================================
+	-- OPTIONAL FEATURES
+	-- ============================================================
+	-- Set to true to enable, false to disable
+
+	-- LaTeX Support (VimTeX + texlab LSP)
+	-- Provides: LaTeX editing, compilation, PDF preview with SyncTeX
+	-- Prerequisites: LaTeX distribution (texlive/mactex), Skim (macOS) or Zathura (Linux)
+	-- Documentation: docs/tutorial/12-latex-setup.md
+	latex = false,
+
+	-- ============================================================
+	-- FUTURE OPTIONAL FEATURES
+	-- ============================================================
+	-- Add more optional features here as the repository grows
+	-- Examples:
+	-- markdown_preview = false,
+	-- git_integration = false,
+	-- debugging = false,
+}

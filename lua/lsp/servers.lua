@@ -18,14 +18,27 @@
 
 local M = {}
 
+-- Load user configuration (git-ignored, prevents git pull conflicts)
+local user_config = {}
+local ok, config = pcall(require, 'user-config')
+if ok then
+	user_config = config
+end
+
 -- Automatically load all server configs from lua/lsp/servers/
 local servers_path = vim.fn.stdpath 'config' .. '/lua/lsp/servers'
 local server_files = vim.fn.glob(servers_path .. '/*.lua', false, true)
 
 for _, filepath in ipairs(server_files) do
 	local filename = vim.fn.fnamemodify(filepath, ':t:r')
-	local ok, server_config = pcall(require, 'lsp.servers.' .. filename)
-	if ok and server_config then
+
+	-- Skip texlab if LaTeX support is disabled in user config
+	if filename == 'texlab' and not user_config.latex then
+		goto continue
+	end
+
+	local load_ok, server_config = pcall(require, 'lsp.servers.' .. filename)
+	if load_ok and server_config then
 		M[filename] = server_config
 	else
 		vim.notify(
@@ -33,6 +46,8 @@ for _, filepath in ipairs(server_files) do
 			vim.log.levels.WARN
 		)
 	end
+
+	::continue::
 end
 
 return M

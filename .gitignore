@@ -6,3 +6,6 @@ nvim
 spell/
 lazy-lock.json
 init.lua.backup
+
+# User configuration (personal settings, not tracked by git)
+lua/user-config.lua
