@@ -1,6 +1,7 @@
 tags
 test.sh
 nvim
+.tex
 
 spell/
 lazy-lock.json
