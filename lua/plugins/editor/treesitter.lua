@@ -24,6 +24,8 @@ return {
 		},
 		-- Autoinstall languages that are not installed
 		auto_install = true,
+		-- Prevent installation of these parsers (VimTeX handles LaTeX)
+		ignore_install = { 'latex' },
 		highlight = {
 			enable = true,
 			-- Disable treesitter for LaTeX files (VimTeX provides better highlighting)
