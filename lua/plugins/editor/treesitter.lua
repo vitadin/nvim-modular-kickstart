@@ -46,18 +46,18 @@ return {
 		},
 		-- Autoinstall languages that are not installed
 		auto_install = true,
-		-- Prevent installation of these parsers (VimTeX handles LaTeX)
-		ignore_install = { 'latex' },
+		-- Prevent installation of these parsers (VimTeX handles LaTeX and BibTeX)
+		ignore_install = { 'latex', 'bibtex' },
 		highlight = {
 			enable = true,
-			-- Disable treesitter for LaTeX files (VimTeX provides better highlighting)
-			disable = { 'latex' },
+			-- Disable treesitter for LaTeX/BibTeX files (VimTeX provides better highlighting)
+			disable = { 'latex', 'bibtex' },
 			-- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
 			--  If you are experiencing weird indenting issues, add the language to
 			--  the list of additional_vim_regex_highlighting and disabled languages for indent.
 			additional_vim_regex_highlighting = { 'ruby' },
 		},
-		indent = { enable = true, disable = { 'ruby', 'latex' } },
+		indent = { enable = true, disable = { 'ruby', 'latex', 'bibtex' } },
 
 		-- Disable query predicates that may cause compatibility issues
 		-- This fixes the "attempt to call method 'parent' (a nil value)" error
