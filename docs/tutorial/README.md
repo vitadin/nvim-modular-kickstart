@@ -73,6 +73,13 @@ skill. No overwhelming 500+ line documents!
 24. [**LaTeX Setup and Usage**](./12-latex-setup.md) - Writing academic papers and
     documents with LaTeX support (disabled by default)
 
+### Essential Skills
+
+25. [**Buffer Management**](./13-buffer-management.md) - How to close individual
+    buffers without affecting others
+26. [**Temporary Bookmarks**](./14-temporary-bookmarks.md) - Quick jumping between
+    positions in different files
+
 ## Quick Start: Jump to What You Need
 
 ### I want to...
@@ -88,6 +95,8 @@ skill. No overwhelming 500+ line documents!
 - **Switch files fast** → [Recent Files](./08-telescope-recent-files.md)
 - **Better command-line** → [Wilder Command Line](./11-wilder-command-line.md)
 - **Write LaTeX documents** → [LaTeX Setup and Usage](./12-latex-setup.md)
+- **Close a buffer without closing others** → [Buffer Management](./13-buffer-management.md)
+- **Jump between doc and code quickly** → [Temporary Bookmarks](./14-temporary-bookmarks.md)
 
 ## Quick Reference
 
