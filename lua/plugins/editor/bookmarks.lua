@@ -3,7 +3,7 @@
 -- See: https://github.com/crusj/bookmarks.nvim
 --
 -- Usage:
---   <tab><tab>  - Toggle bookmark at current position
+--   mm          - Toggle bookmark at current position (mark mark)
 --   <leader>ma  - Show all bookmarks (Telescope picker)
 --   ]b / [b     - Next/previous bookmark
 --
@@ -12,8 +12,10 @@
 return {
 	'crusj/bookmarks.nvim',
 	keys = {
-		{ '<tab><tab>', mode = { 'n' } },
+		{ 'mm', mode = { 'n' } },
 		{ '<leader>ma', mode = { 'n' } },
+		{ '<leader>ml', mode = { 'n' } },
+		{ '<leader>mc', mode = { 'n' } },
 		{ ']b', mode = { 'n' } },
 		{ '[b', mode = { 'n' } },
 	},
@@ -33,17 +35,16 @@ return {
 			on_attach = function(bufnr)
 				local bm = require 'bookmarks'
 				local map = vim.keymap.set
-				-- Toggle bookmark at current line
-				map('n', '<tab><tab>', bm.bookmark_toggle, { desc = 'Toggle bookmark', buffer = bufnr })
+				-- Toggle bookmark at current line (mm = mark mark)
+				map('n', 'mm', bm.bookmark_toggle, { desc = 'Toggle bookmark', buffer = bufnr })
 				-- Jump to next/previous bookmark
 				map('n', ']b', bm.bookmark_next, { desc = 'Next bookmark', buffer = bufnr })
 				map('n', '[b', bm.bookmark_prev, { desc = 'Previous bookmark', buffer = bufnr })
 				-- Show all bookmarks in Telescope
-				map('n', '<leader>ma', '<cmd>Telescope bookmarks list<cr>', { desc = 'Show all bookmarks', buffer = bufnr })
+				map('n', '<leader>ma', '<cmd>Telescope bookmarks list<cr>', { desc = 'Show [a]ll bookmarks', buffer = bufnr })
+				map('n', '<leader>ml', '<cmd>Telescope bookmarks list<cr>', { desc = '[L]ist bookmarks', buffer = bufnr })
 				-- Clear all bookmarks in current buffer
-				map('n', '<leader>mc', bm.bookmark_clean, { desc = 'Clear bookmarks in buffer', buffer = bufnr })
-				-- Annotate bookmark (add description)
-				map('n', '<leader>mm', bm.bookmark_ann, { desc = 'Annotate bookmark', buffer = bufnr })
+				map('n', '<leader>mc', bm.bookmark_clean, { desc = '[C]lear bookmarks in buffer', buffer = bufnr })
 			end,
 		}
 		require('telescope').load_extension 'bookmarks'

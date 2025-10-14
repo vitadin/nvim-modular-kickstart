@@ -31,14 +31,14 @@ This configuration includes `bookmarks.nvim` which provides **session-based temp
 1. **Open instruction.md**, go to section A you're reading
    ```vim
    " Press Tab twice to bookmark this position
-   <tab><tab>
+   mm
    ```
    You'll see a bookmark indicator in the sign column
 
 2. **Open your code file**, go to the function you're implementing
    ```vim
    " Press Tab twice to bookmark
-   <tab><tab>
+   mm
    ```
 
 3. **Jump between bookmarks**
@@ -48,7 +48,7 @@ This configuration includes `bookmarks.nvim` which provides **session-based temp
    ```
 
 4. **When done with this section**, move to the next part
-   - Bookmark new positions with `<tab><tab>`
+   - Bookmark new positions with `mm`
    - Old bookmarks stay until you toggle them off or close Neovim
 
 ---
@@ -58,7 +58,7 @@ This configuration includes `bookmarks.nvim` which provides **session-based temp
 ### Toggle Bookmarks
 
 ```vim
-<tab><tab>    " Toggle bookmark at current line
+mm    " Toggle bookmark at current line
               " Press once to add, press again to remove
 ```
 
@@ -124,12 +124,12 @@ Add a note like "Check this implementation" or "Reference for X"
 " 2. Find the endpoint description (line 45)
 /POST /users
 " Bookmark it
-<tab><tab>
+mm
 
 " 3. Find the response format (line 120)
 /Response Schema
 " Bookmark it
-<tab><tab>
+mm
 
 " 4. Open your code file
 :e src/api/users.js
@@ -137,7 +137,7 @@ Add a note like "Check this implementation" or "Reference for X"
 " 5. Find the function you're implementing (line 30)
 /createUser
 " Bookmark it
-<tab><tab>
+mm
 ```
 
 ### Step 2: Work Flow
@@ -178,7 +178,7 @@ Add a note like "Check this implementation" or "Reference for X"
 <leader>mc    " Clear all bookmarks in this file
 
 " Or toggle them off individually
-<tab><tab>    " On each bookmarked line
+mm    " On each bookmarked line
 ```
 
 ---
@@ -212,7 +212,7 @@ Unlike Vim's built-in marks (`ma`, `'a`):
 
 | Feature | Bookmarks.nvim | Vim Marks (`ma`) |
 |---------|----------------|------------------|
-| Toggle on/off | `<tab><tab>` | Can't toggle, must delete |
+| Toggle on/off | `mm` | Can't toggle, must delete |
 | Jump next/prev | `]b` / `[b` | Need to remember mark letters |
 | Cross-file jump | ✅ Yes | Only `A-Z` marks (26 max) |
 | Visual list | Telescope view | `:marks` (text only) |
@@ -232,7 +232,7 @@ Unlike Vim's built-in marks (`ma`, `'a`):
 When reading documentation:
 ```vim
 " Bookmark the sections you need to reference frequently
-<tab><tab>   " On each important section
+mm   " On each important section
 
 " Then code without switching windows
 " Jump back when needed with ]b / [b
@@ -256,7 +256,7 @@ Instead of bookmarking everywhere:
 ### 4. Annotate Important Ones
 
 ```vim
-<tab><tab>   " Bookmark line
+mm   " Bookmark line
 <leader>mm   " Add note: "API auth header format"
 ```
 
@@ -268,7 +268,7 @@ Later in Telescope view, you'll see your note!
 
 | Command | Action |
 |---------|--------|
-| `<tab><tab>` | Toggle bookmark on current line |
+| `mm` | Toggle bookmark on current line |
 | `]b` | Next bookmark (all files) |
 | `[b` | Previous bookmark (all files) |
 | `<leader>ma` | Show all bookmarks (Telescope) |
@@ -312,11 +312,11 @@ Later in Telescope view, you'll see your note!
 
 ### Bookmark Not Showing
 
-**Problem:** Pressed `<tab><tab>` but no visual indicator
+**Problem:** Pressed `mm` but no visual indicator
 
 **Solution:**
 - Check sign column is enabled: `:set signcolumn?` (should show `yes` or `auto`)
-- Try toggling twice: `<tab><tab>` `<tab><tab>`
+- Try toggling twice: `mm` `mm`
 - Restart Neovim if plugin didn't load
 
 ### Can't Jump Between Bookmarks
@@ -346,7 +346,7 @@ Later in Telescope view, you'll see your note!
 - Multi-file workflows
 
 **Key Commands:**
-- `<tab><tab>` - Bookmark this spot
+- `mm` - Bookmark this spot
 - `]b` / `[b` - Jump between spots
 - `<leader>ma` - See all spots
 

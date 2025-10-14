@@ -109,7 +109,7 @@ skill. No overwhelming 500+ line documents!
 - **Wilder**: `:` (command mode with popup), `<Tab>` (next suggestion)
 - **LSP**: `grd` (definition), `grr` (references), `grn` (rename)
 - **Git**: `]c` / `[c` (next/prev change), `<leader>hs` (stage hunk)
-- **Bookmarks**: `<tab><tab>` (toggle bookmark)
+- **Bookmarks**: `mm` (toggle bookmark), `]b`/`[b` (next/prev bookmark)
 
 ### Common Vim Motions (Quick Reference)
 
