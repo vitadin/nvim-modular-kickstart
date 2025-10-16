@@ -209,6 +209,79 @@ local function list_bookmarks()
 	end
 
 	vim.cmd('marks ' .. table.concat(mark_chars, ''))
+	vim.notify("Press 'a to jump to mark a, 'b for mark b, etc.", vim.log.levels.INFO)
+end
+
+-- Telescope picker for bookmarks (interactive selection)
+local function telescope_bookmarks()
+	if #active_marks == 0 then
+		vim.notify('No bookmarks set', vim.log.levels.INFO)
+		return
+	end
+
+	local pickers = require 'telescope.pickers'
+	local finders = require 'telescope.finders'
+	local conf = require('telescope.config').values
+	local actions = require 'telescope.actions'
+	local action_state = require 'telescope.actions.state'
+
+	-- Build entries for telescope
+	local entries = {}
+	for _, mark_data in ipairs(active_marks) do
+		local mark_pos = vim.api.nvim_buf_get_mark(mark_data.buffer, mark_data.mark)
+		if mark_pos[1] > 0 then
+			local bufname = vim.api.nvim_buf_get_name(mark_data.buffer)
+			local filename = vim.fn.fnamemodify(bufname, ':t')
+			local lines = vim.api.nvim_buf_get_lines(mark_data.buffer, mark_pos[1] - 1, mark_pos[1], false)
+			local line_content = lines[1] or ''
+
+			table.insert(entries, {
+				mark = mark_data.mark,
+				buffer = mark_data.buffer,
+				line = mark_pos[1],
+				col = mark_pos[2],
+				filename = filename,
+				filepath = bufname,
+				content = line_content,
+				display = string.format('[%s] %s:%d - %s', mark_data.mark, filename, mark_pos[1], line_content:match '^%s*(.-)%s*$'),
+			})
+		end
+	end
+
+	-- Sort by mark letter
+	table.sort(entries, function(a, b)
+		return a.mark < b.mark
+	end)
+
+	pickers
+		.new({}, {
+			prompt_title = 'Bookmarks',
+			finder = finders.new_table {
+				results = entries,
+				entry_maker = function(entry)
+					return {
+						value = entry,
+						display = entry.display,
+						ordinal = entry.mark .. ' ' .. entry.filename .. ' ' .. entry.content,
+						filename = entry.filepath,
+						lnum = entry.line,
+						col = entry.col + 1,
+					}
+				end,
+			},
+			sorter = conf.generic_sorter {},
+			previewer = conf.grep_previewer {},
+			attach_mappings = function(prompt_bufnr, map)
+				actions.select_default:replace(function()
+					local selection = action_state.get_selected_entry()
+					actions.close(prompt_bufnr)
+					vim.api.nvim_set_current_buf(selection.value.buffer)
+					vim.api.nvim_win_set_cursor(0, { selection.value.line, selection.value.col })
+				end)
+				return true
+			end,
+		})
+		:find()
 end
 
 -- Clear bookmarks in current buffer
@@ -261,7 +334,8 @@ end
 vim.keymap.set('n', 'mm', toggle_bookmark, { desc = 'Toggle bookmark' })
 vim.keymap.set('n', 'mn', next_bookmark, { desc = 'Next bookmark' })
 vim.keymap.set('n', 'mp', prev_bookmark, { desc = 'Previous bookmark' })
-vim.keymap.set('n', 'ml', list_bookmarks, { desc = 'List bookmarks' })
+vim.keymap.set('n', 'ml', list_bookmarks, { desc = 'List bookmarks (Vim marks)' })
+vim.keymap.set('n', '<leader>mb', telescope_bookmarks, { desc = 'Show [b]ookmarks (Telescope)' })
 vim.keymap.set('n', 'mc', clear_buffer_bookmarks, { desc = 'Clear bookmarks in buffer' })
 vim.keymap.set('n', 'mx', clear_all_bookmarks, { desc = 'Clear all bookmarks' })
 
