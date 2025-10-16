@@ -176,6 +176,11 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
 		vim.cmd 'syntax enable'
 		-- Force reload markdown syntax to pick up fenced languages
 		vim.cmd 'setlocal syntax=markdown'
+
+		-- Set pure black background for code blocks
+		vim.api.nvim_set_hl(0, 'markdownCode', { bg = '#000000' })
+		vim.api.nvim_set_hl(0, 'markdownCodeBlock', { bg = '#000000' })
+		vim.api.nvim_set_hl(0, 'markdownCodeDelimiter', { bg = '#000000' })
 	end,
 	desc = 'Disable Treesitter for markdown in Neovide, use Vim syntax',
 })
