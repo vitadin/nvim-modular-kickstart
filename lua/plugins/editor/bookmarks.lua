@@ -208,8 +208,11 @@ local function list_bookmarks()
 		table.insert(mark_chars, mark_data.mark)
 	end
 
-	-- Show marks list with help message appended
-	vim.cmd('marks ' .. table.concat(mark_chars, '') .. ' | echo "Press \'a to jump to mark a, \'b for mark b, etc."')
+	-- Show marks list, then immediately show help message
+	vim.api.nvim_echo({
+		{ "Press 'a to jump to mark a, 'b for mark b, etc.\n\n", 'WarningMsg' },
+	}, false, {})
+	vim.cmd('marks ' .. table.concat(mark_chars, ''))
 end
 
 -- Telescope picker for bookmarks (interactive selection)
