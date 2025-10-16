@@ -65,13 +65,11 @@ local function toggle_bookmark()
 		end
 		vim.notify('Bookmark removed', vim.log.levels.INFO)
 	else
-		-- Find next available mark (a-z) in current buffer
-		-- Check which marks are already used in THIS buffer
+		-- Find next available mark (a-z) globally across all buffers
+		-- Check which marks are already used in ANY buffer
 		local used_marks = {}
 		for _, mark_data in ipairs(active_marks) do
-			if mark_data.buffer == buf then
-				used_marks[mark_data.mark] = true
-			end
+			used_marks[mark_data.mark] = true
 		end
 
 		-- Find first unused mark
