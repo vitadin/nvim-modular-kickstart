@@ -220,8 +220,8 @@ local function list_bookmarks()
 		end
 	end
 
-	-- Display using echo to keep it visible
-	vim.cmd('echo ' .. vim.fn.string(output))
+	-- Display using nvim_echo which handles strings properly
+	vim.api.nvim_echo({ { output, 'Normal' } }, false, {})
 end
 
 -- Telescope picker for bookmarks (interactive selection)
