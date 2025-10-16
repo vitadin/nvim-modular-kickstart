@@ -47,6 +47,18 @@ return {
 			return
 		end
 
+		-- Set up global keymaps as fallback (on_attach might not trigger)
+		vim.keymap.set('n', 'mm', function()
+			vim.notify('mm pressed - calling bookmark_toggle', vim.log.levels.INFO)
+			bookmarks.bookmark_toggle()
+		end, { desc = 'Toggle bookmark' })
+		vim.keymap.set('n', 'mi', bookmarks.bookmark_ann, { desc = 'Annotate bookmark' })
+		vim.keymap.set('n', 'mc', bookmarks.bookmark_clean, { desc = 'Clean bookmarks' })
+		vim.keymap.set('n', 'mn', bookmarks.bookmark_next, { desc = 'Next bookmark' })
+		vim.keymap.set('n', 'mp', bookmarks.bookmark_prev, { desc = 'Previous bookmark' })
+		vim.keymap.set('n', 'ml', bookmarks.bookmark_list, { desc = 'List bookmarks' })
+		vim.keymap.set('n', 'mx', bookmarks.bookmark_clear_all, { desc = 'Clear all bookmarks' })
+
 		vim.notify('Bookmarks.nvim loaded successfully', vim.log.levels.INFO)
 	end,
 }
