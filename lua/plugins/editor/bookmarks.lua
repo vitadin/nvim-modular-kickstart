@@ -28,6 +28,10 @@ for mark = string.byte('a'), string.byte('z') do
 	})
 end
 
+-- Clear all a-z marks on startup to ensure clean state
+-- This prevents old marks from previous sessions (stored in shada) from interfering
+pcall(vim.cmd, 'delmarks a-z')
+
 -- Toggle bookmark at current position
 local function toggle_bookmark()
 	local line = vim.api.nvim_win_get_cursor(0)[1]
