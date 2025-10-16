@@ -76,3 +76,8 @@ vim.o.confirm = true
 
 -- Set line spacing (only works in GUI clients like neovide)
 vim.o.linespace = 2
+
+-- Text wrapping width (for gq command)
+-- Set to 80 characters by default (common standard)
+-- Use :set textwidth=100 to change temporarily
+vim.o.textwidth = 80

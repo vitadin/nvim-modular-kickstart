@@ -65,3 +65,12 @@ vim.keymap.set(
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+
+-- Text wrapping keybindings (similar to VSCode Alt+Q)
+-- Wrap current paragraph to textwidth (default 80 chars)
+vim.keymap.set('n', '<leader>w', 'gqip', { desc = '[W]rap paragraph' })
+-- Wrap visual selection
+vim.keymap.set('v', '<leader>w', 'gq', { desc = '[W]rap selection' })
+-- Alternative: Use Alt+q (if your terminal supports it)
+-- vim.keymap.set('n', '<A-q>', 'gqip', { desc = 'Wrap paragraph' })
+-- vim.keymap.set('v', '<A-q>', 'gq', { desc = 'Wrap selection' })
