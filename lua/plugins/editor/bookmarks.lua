@@ -65,12 +65,20 @@ local function toggle_bookmark()
 		end
 		vim.notify('Bookmark removed', vim.log.levels.INFO)
 	else
-		-- Find next available mark (a-z)
+		-- Find next available mark (a-z) in current buffer
+		-- Check which marks are already used in THIS buffer
+		local used_marks = {}
+		for _, mark_data in ipairs(active_marks) do
+			if mark_data.buffer == buf then
+				used_marks[mark_data.mark] = true
+			end
+		end
+
+		-- Find first unused mark
 		local mark_char = nil
 		for mark = string.byte('a'), string.byte('z') do
 			local char = string.char(mark)
-			local mark_pos = vim.api.nvim_buf_get_mark(buf, char)
-			if mark_pos[1] == 0 then
+			if not used_marks[char] then
 				mark_char = char
 				break
 			end
@@ -94,7 +102,7 @@ local function toggle_bookmark()
 
 			vim.notify('Bookmark set: ' .. mark_char, vim.log.levels.INFO)
 		else
-			vim.notify('No available bookmark slots (a-z all used)', vim.log.levels.WARN)
+			vim.notify('No available bookmark slots (a-z all used in this buffer)', vim.log.levels.WARN)
 		end
 	end
 end
