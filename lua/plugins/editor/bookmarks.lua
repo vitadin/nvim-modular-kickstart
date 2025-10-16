@@ -101,7 +101,48 @@ local function next_bookmark()
 		vim.notify('No bookmarks set', vim.log.levels.WARN)
 		return
 	end
-	vim.cmd("normal! ]'")
+
+	local current_buf = vim.api.nvim_get_current_buf()
+	local current_line = vim.api.nvim_win_get_cursor(0)[1]
+
+	-- Find all bookmarks in current buffer after current line
+	local next_marks = {}
+	for _, mark_data in ipairs(active_marks) do
+		if mark_data.buffer == current_buf then
+			local mark_pos = vim.api.nvim_buf_get_mark(current_buf, mark_data.mark)
+			if mark_pos[1] > current_line then
+				table.insert(next_marks, { mark = mark_data.mark, line = mark_pos[1], col = mark_pos[2] })
+			end
+		end
+	end
+
+	if #next_marks > 0 then
+		-- Sort by line number and jump to the closest one
+		table.sort(next_marks, function(a, b)
+			return a.line < b.line
+		end)
+		vim.api.nvim_win_set_cursor(0, { next_marks[1].line, next_marks[1].col })
+		vim.notify('Jumped to bookmark: ' .. next_marks[1].mark, vim.log.levels.INFO)
+	else
+		-- Wrap around to first bookmark in buffer
+		local first_marks = {}
+		for _, mark_data in ipairs(active_marks) do
+			if mark_data.buffer == current_buf then
+				local mark_pos = vim.api.nvim_buf_get_mark(current_buf, mark_data.mark)
+				table.insert(first_marks, { mark = mark_data.mark, line = mark_pos[1], col = mark_pos[2] })
+			end
+		end
+
+		if #first_marks > 0 then
+			table.sort(first_marks, function(a, b)
+				return a.line < b.line
+			end)
+			vim.api.nvim_win_set_cursor(0, { first_marks[1].line, first_marks[1].col })
+			vim.notify('Wrapped to first bookmark: ' .. first_marks[1].mark, vim.log.levels.INFO)
+		else
+			vim.notify('No bookmarks in this buffer', vim.log.levels.WARN)
+		end
+	end
 end
 
 -- Jump to previous bookmark
@@ -110,7 +151,48 @@ local function prev_bookmark()
 		vim.notify('No bookmarks set', vim.log.levels.WARN)
 		return
 	end
-	vim.cmd("normal! ['")
+
+	local current_buf = vim.api.nvim_get_current_buf()
+	local current_line = vim.api.nvim_win_get_cursor(0)[1]
+
+	-- Find all bookmarks in current buffer before current line
+	local prev_marks = {}
+	for _, mark_data in ipairs(active_marks) do
+		if mark_data.buffer == current_buf then
+			local mark_pos = vim.api.nvim_buf_get_mark(current_buf, mark_data.mark)
+			if mark_pos[1] < current_line then
+				table.insert(prev_marks, { mark = mark_data.mark, line = mark_pos[1], col = mark_pos[2] })
+			end
+		end
+	end
+
+	if #prev_marks > 0 then
+		-- Sort by line number (descending) and jump to the closest one
+		table.sort(prev_marks, function(a, b)
+			return a.line > b.line
+		end)
+		vim.api.nvim_win_set_cursor(0, { prev_marks[1].line, prev_marks[1].col })
+		vim.notify('Jumped to bookmark: ' .. prev_marks[1].mark, vim.log.levels.INFO)
+	else
+		-- Wrap around to last bookmark in buffer
+		local last_marks = {}
+		for _, mark_data in ipairs(active_marks) do
+			if mark_data.buffer == current_buf then
+				local mark_pos = vim.api.nvim_buf_get_mark(current_buf, mark_data.mark)
+				table.insert(last_marks, { mark = mark_data.mark, line = mark_pos[1], col = mark_pos[2] })
+			end
+		end
+
+		if #last_marks > 0 then
+			table.sort(last_marks, function(a, b)
+				return a.line > b.line
+			end)
+			vim.api.nvim_win_set_cursor(0, { last_marks[1].line, last_marks[1].col })
+			vim.notify('Wrapped to last bookmark: ' .. last_marks[1].mark, vim.log.levels.INFO)
+		else
+			vim.notify('No bookmarks in this buffer', vim.log.levels.WARN)
+		end
+	end
 end
 
 -- List all bookmarks
