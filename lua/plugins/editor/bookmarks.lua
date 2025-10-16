@@ -208,20 +208,7 @@ local function list_bookmarks()
 		table.insert(mark_chars, mark_data.mark)
 	end
 
-	-- Build and display marks with header message
-	local output = "Bookmarks (Press 'a to jump to mark a, 'b for mark b, etc.):\n\n"
-
-	-- Get marks information
-	for _, mark_char in ipairs(mark_chars) do
-		local mark_pos = vim.api.nvim_buf_get_mark(0, mark_char)
-		if mark_pos[1] > 0 then
-			local line_content = vim.api.nvim_buf_get_lines(0, mark_pos[1] - 1, mark_pos[1], false)[1] or ''
-			output = output .. string.format(" %s  %4d  %3d  %s\n", mark_char, mark_pos[1], mark_pos[2], line_content:match '^%s*(.-)%s*$')
-		end
-	end
-
-	-- Display using nvim_echo which handles strings properly
-	vim.api.nvim_echo({ { output, 'Normal' } }, false, {})
+	vim.cmd('marks ' .. table.concat(mark_chars, ''))
 end
 
 -- Telescope picker for bookmarks (interactive selection)
@@ -341,6 +328,43 @@ local function clear_all_bookmarks()
 		vim.notify('No bookmarks to clear', vim.log.levels.INFO)
 	end
 end
+
+-- Auto-clear bookmarks when buffer is deleted
+vim.api.nvim_create_autocmd('BufDelete', {
+	callback = function(args)
+		local buf = args.buf
+		-- Remove any bookmarks in this buffer
+		local indices_to_remove = {}
+		for i, mark_data in ipairs(active_marks) do
+			if mark_data.buffer == buf then
+				-- Remove sign
+				pcall(vim.fn.sign_unplace, 'BookmarkGroup', { id = mark_data.sign_id, buffer = buf })
+				-- Delete mark
+				pcall(vim.cmd, 'delmarks ' .. mark_data.mark)
+				table.insert(indices_to_remove, i)
+			end
+		end
+		-- Remove from active_marks
+		for i = #indices_to_remove, 1, -1 do
+			table.remove(active_marks, indices_to_remove[i])
+		end
+	end,
+})
+
+-- Clear all bookmarks on exit
+vim.api.nvim_create_autocmd('VimLeavePre', {
+	callback = function()
+		-- Clear all bookmarks before exiting
+		if #active_marks > 0 then
+			local marks = {}
+			for _, mark_data in ipairs(active_marks) do
+				table.insert(marks, mark_data.mark)
+			end
+			pcall(vim.cmd, 'delmarks ' .. table.concat(marks, ''))
+			active_marks = {}
+		end
+	end,
+})
 
 -- Set up keymaps
 vim.keymap.set('n', 'mm', toggle_bookmark, { desc = 'Toggle bookmark' })
