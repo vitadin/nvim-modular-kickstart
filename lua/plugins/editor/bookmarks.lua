@@ -208,11 +208,20 @@ local function list_bookmarks()
 		table.insert(mark_chars, mark_data.mark)
 	end
 
-	-- Show marks list, then immediately show help message
-	vim.api.nvim_echo({
-		{ "Press 'a to jump to mark a, 'b for mark b, etc.\n\n", 'WarningMsg' },
-	}, false, {})
-	vim.cmd('marks ' .. table.concat(mark_chars, ''))
+	-- Build and display marks with header message
+	local output = "Bookmarks (Press 'a to jump to mark a, 'b for mark b, etc.):\n\n"
+
+	-- Get marks information
+	for _, mark_char in ipairs(mark_chars) do
+		local mark_pos = vim.api.nvim_buf_get_mark(0, mark_char)
+		if mark_pos[1] > 0 then
+			local line_content = vim.api.nvim_buf_get_lines(0, mark_pos[1] - 1, mark_pos[1], false)[1] or ''
+			output = output .. string.format(" %s  %4d  %3d  %s\n", mark_char, mark_pos[1], mark_pos[2], line_content:match '^%s*(.-)%s*$')
+		end
+	end
+
+	-- Display using echo to keep it visible
+	vim.cmd('echo ' .. vim.fn.string(output))
 end
 
 -- Telescope picker for bookmarks (interactive selection)
