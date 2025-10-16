@@ -200,12 +200,12 @@ The quadratic formula is:
 **Method 2: Using Key Mappings (Faster once you get used to it)**
 
 1. **Start compilation** (in normal mode):
-   - Press `\` (backslash) followed immediately by `ll` (two L's)
+   - Press <Space> (spacebar) followed immediately by ll (two L.s)
    - Type them quickly - there's a timeout (usually 1 second)
    - If nothing happens, try `:VimtexCompile` instead
 
 2. **View the PDF**:
-   - Press `\` followed immediately by `lv`
+   - Press <Space> followed immediately by lv
    - Or use `:VimtexView`
 
 **Success!** You just compiled your first LaTeX document in Neovim.
@@ -220,10 +220,10 @@ The quadratic formula is:
 
 **Steps:**
 1. Edit your `.tex` file
-2. Press `\ll` (start continuous compilation)
+2. Press `<Space>ll` (start continuous compilation)
 3. Save your file (`:w`)
 4. Compilation happens automatically
-5. Press `\lv` to view PDF
+5. Press `<Space>lv` to view PDF
 
 **Continuous compilation means:** Every time you save, LaTeX recompiles automatically.
 
@@ -235,12 +235,12 @@ The quadratic formula is:
 
 **Steps:**
 1. Place cursor on line 42
-2. Press `\lv` in normal mode
+2. Press `<Space>lv` in normal mode
 3. PDF viewer jumps to that paragraph
 
 **Try it:**
 - Go to the line with "quadratic formula"
-- Press `\lv`
+- Press `<Space>lv`
 - The PDF should jump to that equation
 
 ### Workflow 3: Backward Search
@@ -366,21 +366,21 @@ Press `<C-n>` - you should see `sec:intro` suggested!
 
 **Key Mapping Version (faster but requires quick typing):**
 
-All mappings use `\` (backslash) as leader - press `\` then the letters quickly:
+NOTE: This config uses <Space> as localleader, so VimTeX mappings use <Space> not backslash:
 
 | Mapping | Action |
 |---------|--------|
-| `\ll` | Start/stop continuous compilation |
-| `\lk` | Stop compilation |
-| `\lv` | View PDF (forward search) |
-| `\lc` | Clean auxiliary files (.aux, .log, etc.) |
-| `\le` | Show errors in quickfix window |
+| `<Space>ll` | Start/stop continuous compilation |
+| `<Space>lk` | Stop compilation |
+| `<Space>lv` | View PDF (forward search) |
+| `<Space>lc` | Clean auxiliary files (.aux, .log, etc.) |
+| `<Space>le` | Show errors in quickfix window |
 
 ### Navigation Commands
 
 | Command | Action |
 |---------|--------|
-| `\lt` | Open table of contents |
+| `<Space>lt` | Open table of contents |
 | `]]` | Next section |
 | `[[` | Previous section |
 | `]m` | Next environment start |
@@ -493,7 +493,7 @@ Even more text...
 **Navigate sections:**
 - Press `]]` to jump to next section
 - Press `[[` to jump to previous section
-- Press `\lt` to open table of contents, select section to jump
+- Press `<Space>lt` to open table of contents, select section to jump
 
 ### Example 4: Fix a Typo in PDF
 
@@ -545,16 +545,16 @@ According to Einstein \cite{einstein1905}, relativity...
 
 ### Tip 1: Keep Compilation Running
 
-Start compilation once with `\ll` and leave it running:
+Start compilation once with `<Space>ll` and leave it running:
 - Every save triggers recompilation
-- Faster than manual `\ll` each time
-- Stop with `\lk` when done
+- Faster than manual `<Space>ll` each time
+- Stop with `<Space>lk` when done
 
 ### Tip 2: Use Table of Contents for Large Documents
 
 For documents with many sections:
 ```
-\lt
+<Space>lt
 ```
 Opens a navigable table of contents window.
 Press `Enter` to jump to a section.
@@ -595,9 +595,9 @@ Opens PDF in split window (macOS specific).
 
 ## Troubleshooting
 
-### Issue 1: `\ll` Does Nothing (Most Common Issue)
+### Issue 1: `<Space>ll` Does Nothing (Most Common Issue)
 
-**Problem:** You press `\ll` in normal mode but nothing happens.
+**Problem:** You press `<Space>ll` in normal mode but nothing happens.
 
 **Root cause:** VimTeX is still disabled (this is the default state).
 
@@ -618,13 +618,13 @@ Opens PDF in split window (macOS specific).
 5. Save the file
 6. Restart Neovim
 7. Run `:Lazy sync` to install VimTeX
-8. Open your `.tex` file again and try `\ll`
+8. Open your `.tex` file again and try `<Space>ll`
 
 **If it returns `1`:** VimTeX is enabled. The key mapping might not be working. Try:
 
 1. **Use command-line instead:** Type `:VimtexCompile` and press Enter
    - If this works, the issue is with the key mapping timeout
-   - Solution: Press `\` and `ll` very quickly (within 1 second)
+   - Solution: Press <Space> and ll very quickly (within 1 second)
 
 2. **Check file type:** Run `:set ft?` (should show `tex`)
    - If not `tex`, rename file to end with `.tex`
@@ -632,7 +632,7 @@ Opens PDF in split window (macOS specific).
 3. **Check LaTeX installed:** Run `which pdflatex` in terminal
    - Should show path like `/usr/local/bin/pdflatex`
 
-4. **Verify mapping exists:** Run `:verbose map \ll`
+4. **Verify mapping exists:** Run `:verbose map <Space>ll`
    - Should show the VimTeX mapping
 
 **Tip:** If key mappings don't work reliably, just use command-line commands like `:VimtexCompile` - they're more explicit and easier to debug.
@@ -681,7 +681,7 @@ If missing, check compilation options in `lua/plugins/editor/vimtex.lua`:
 '-synctex=1',  -- Should be present
 ```
 
-Recompile: `\lc` then `\ll`
+Recompile: `<Space>lc` then `<Space>ll`
 
 ### Issue 5: Compilation Errors
 

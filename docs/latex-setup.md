@@ -133,7 +133,7 @@ Hello, LaTeX!
 ### Test SyncTeX (Forward Search)
 
 1. Place cursor on any line in your `.tex` file
-2. Press `\lv` in normal mode
+2. Press `<Space>lv` in normal mode
 3. The PDF viewer should jump to that exact location
 
 ### Test Backward Search
@@ -151,14 +151,14 @@ Hello, LaTeX!
 VimTeX provides these default mappings (leader is `\`):
 
 ### Compilation
-- `\ll` - Start/stop continuous compilation
-- `\lk` - Stop compilation
-- `\lc` - Clean auxiliary files (.aux, .log, etc.)
-- `\le` - Show errors in quickfix list
+- `<Space>ll` - Start/stop continuous compilation
+- `<Space>lk` - Stop compilation
+- `<Space>lc` - Clean auxiliary files (.aux, .log, etc.)
+- `<Space>le` - Show errors in quickfix list
 
 ### Navigation
-- `\lv` - View PDF (forward search to current location)
-- `\lt` - Open table of contents
+- `<Space>lv` - View PDF (forward search to current location)
+- `<Space>lt` - Open table of contents
 - `]]` / `[[` - Next/previous section
 - `]m` / `[m` - Next/previous environment
 
@@ -206,7 +206,7 @@ vim.g.vimtex_compiler_latexmk_engines = {
 
 ### Enable Automatic Compilation on Save
 
-By default, you manually trigger compilation with `\ll`. To compile automatically on save:
+By default, you manually trigger compilation with `<Space>ll`. To compile automatically on save:
 
 Edit `lua/lsp/servers/texlab.lua`:
 
@@ -222,7 +222,7 @@ This is already the default in our configuration.
 
 ### VimTeX commands don't work
 
-**Problem:** Pressing `\ll` does nothing
+**Problem:** Pressing `<Space>ll` does nothing
 
 **Solutions:**
 1. Check VimTeX is enabled: `:echo g:vimtex_enabled`
@@ -232,7 +232,7 @@ This is already the default in our configuration.
 
 ### PDF viewer doesn't open
 
-**Problem:** `\lv` does nothing or gives error
+**Problem:** `<Space>lv` does nothing or gives error
 
 **Solutions:**
 1. Verify viewer is installed:
@@ -266,13 +266,13 @@ This is already the default in our configuration.
 
 ### Forward/Backward search doesn't work
 
-**Problem:** `\lv` doesn't jump to PDF location
+**Problem:** `<Space>lv` doesn't jump to PDF location
 
 **Solutions:**
 1. Check SyncTeX is enabled (it should be by default)
 2. Verify .synctex.gz file exists next to your PDF
 3. Check viewer supports SyncTeX (Skim or Zathura required)
-4. Try recompiling: `\lc` then `\ll`
+4. Try recompiling: `<Space>lc` then `<Space>ll`
 
 ### Compilation fails with errors
 
@@ -281,7 +281,7 @@ This is already the default in our configuration.
 **Solutions:**
 1. Check LaTeX syntax in your document
 2. View full log: `:VimtexLog`
-3. Clean and rebuild: `\lc` then `\ll`
+3. Clean and rebuild: `<Space>lc` then `<Space>ll`
 4. Check required packages are installed
 
 ## Disabling LaTeX Support

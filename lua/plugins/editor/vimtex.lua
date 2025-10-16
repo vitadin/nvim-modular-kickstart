@@ -71,7 +71,7 @@ return {
 			},
 		}
 
-		-- Disable automatic compilation on save (manual trigger with \ll)
+		-- Disable automatic compilation on save (manual trigger with <Space>ll)
 		-- Set to 1 to enable automatic compilation
 		vim.g.vimtex_compiler_latexmk_engines = {
 			_ = '-pdf', -- Default to pdflatex
@@ -106,13 +106,15 @@ return {
 	end,
 
 	-- Key mappings are handled by VimTeX automatically
-	-- Default mappings (with leader = '\'):
-	--   \ll - Start/stop continuous compilation
-	--   \lv - View PDF (forward search to current location)
-	--   \lc - Clean auxiliary files
-	--   \le - Show errors in quickfix
-	--   \lt - Open table of contents
-	--   \lk - Stop compilation
+	-- NOTE: This config sets maplocalleader = <Space>, so VimTeX uses <Space> not '\'
+	-- Main compilation mappings:
+	--   <Space>ll - Start/stop continuous compilation
+	--   <Space>lv - View PDF (forward search to current location)
+	--   <Space>lc - Clean auxiliary files
+	--   <Space>le - Show errors in quickfix
+	--   <Space>lt - Open table of contents
+	--   <Space>lk - Stop compilation
+	-- Text object mappings (non-leader):
 	--   dse - Delete surrounding environment
 	--   cse - Change surrounding environment
 	--   tse - Toggle starred environment (e.g., equation <-> equation*)
