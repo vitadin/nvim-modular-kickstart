@@ -208,11 +208,9 @@ local function list_bookmarks()
 		table.insert(mark_chars, mark_data.mark)
 	end
 
+	-- Show marks list with help message
 	vim.cmd('marks ' .. table.concat(mark_chars, ''))
-	-- Delay notification so it appears after marks window
-	vim.defer_fn(function()
-		vim.notify("Press 'a to jump to mark a, 'b for mark b, etc.", vim.log.levels.INFO)
-	end, 100)
+	vim.cmd([[echo "\nPress 'a to jump to mark a, 'b for mark b, etc."]])
 end
 
 -- Telescope picker for bookmarks (interactive selection)
