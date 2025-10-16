@@ -176,30 +176,6 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
 		vim.cmd 'syntax enable'
 		-- Force reload markdown syntax to pick up fenced languages
 		vim.cmd 'setlocal syntax=markdown'
-
-		-- Set pure black background for code blocks
-		vim.api.nvim_set_hl(0, 'markdownCode', { bg = '#000000' })
-		vim.api.nvim_set_hl(0, 'markdownCodeBlock', { bg = '#000000' })
-		vim.api.nvim_set_hl(0, 'markdownCodeDelimiter', { bg = '#000000' })
-
-		-- Force black background for all syntax groups inside code blocks
-		-- We need to override each language's syntax highlighting background
-		local code_languages = {
-			'bash', 'c', 'cpp', 'go', 'html', 'javascript', 'json',
-			'lua', 'python', 'sh', 'typescript', 'vim'
-		}
-
-		for _, lang in ipairs(code_languages) do
-			-- Get all highlight groups for this language and set black background
-			local groups = vim.fn.getcompletion(lang, 'highlight')
-			for _, group in ipairs(groups) do
-				local hl = vim.api.nvim_get_hl(0, { name = group })
-				if hl and not vim.tbl_isempty(hl) then
-					-- Keep foreground color but set black background
-					vim.api.nvim_set_hl(0, group, vim.tbl_extend('force', hl, { bg = '#000000' }))
-				end
-			end
-		end
 	end,
 	desc = 'Disable Treesitter for markdown in Neovide, use Vim syntax',
 })
