@@ -77,8 +77,8 @@ skill. No overwhelming 500+ line documents!
 
 25. [**Buffer Management**](./13-buffer-management.md) - How to close individual
     buffers without affecting others
-26. [**Temporary Bookmarks**](./14-temporary-bookmarks.md) - Quick jumping between
-    positions in different files
+26. [**Temporary Bookmarks**](./15-bookmarks.md) - Session-based markers for quick
+    navigation within and across files
 
 ## Quick Start: Jump to What You Need
 
@@ -96,7 +96,7 @@ skill. No overwhelming 500+ line documents!
 - **Better command-line** → [Wilder Command Line](./11-wilder-command-line.md)
 - **Write LaTeX documents** → [LaTeX Setup and Usage](./12-latex-setup.md)
 - **Close a buffer without closing others** → [Buffer Management](./13-buffer-management.md)
-- **Jump between doc and code quickly** → [Temporary Bookmarks](./14-temporary-bookmarks.md)
+- **Jump between doc and code quickly** → [Temporary Bookmarks](./15-bookmarks.md)
 
 ## Quick Reference
 
@@ -109,7 +109,7 @@ skill. No overwhelming 500+ line documents!
 - **Wilder**: `:` (command mode with popup), `<Tab>` (next suggestion)
 - **LSP**: `grd` (definition), `grr` (references), `grn` (rename)
 - **Git**: `]c` / `[c` (next/prev change), `<leader>hs` (stage hunk)
-- **Bookmarks**: `mm` (toggle bookmark), `]b`/`[b` (next/prev bookmark)
+- **Bookmarks**: `mm` (toggle), `mn`/`mp` (next/prev), `<leader>mb` (Telescope)
 
 ### Common Vim Motions (Quick Reference)
 
