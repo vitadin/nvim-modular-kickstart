@@ -11,49 +11,37 @@
 
 return {
 	'crusj/bookmarks.nvim',
-	-- Load on VimEnter to ensure it's always available
-	event = 'VimEnter',
 	branch = 'main',
-	dependencies = { 'nvim-web-devicons', 'nvim-telescope/telescope.nvim' },
+	dependencies = {
+		'nvim-web-devicons',
+		'nvim-telescope/telescope.nvim',
+	},
 	config = function()
-		local bookmarks = require 'bookmarks'
-
-		-- Setup bookmarks
-		bookmarks.setup {
-			-- Save bookmarks in memory only (not persisted to disk)
-			-- They disappear when you close Neovim - perfect for temporary workflow
-			save_file = vim.fn.stdpath 'data' .. '/bookmarks',
+		require('bookmarks').setup {
+			save_file = vim.fn.expand '$HOME/.bookmarks', -- bookmarks save file path
 			keywords = {
-				['@t'] = '☑️ ', -- Task
-				['@w'] = '⚠️ ', -- Warning
-				['@f'] = '⭐ ', -- Feature
-				['@n'] = '📝 ', -- Note
+				['@t'] = '☑️ ', -- mark annotation startswith @t ,signs this icon as `Todo`
+				['@w'] = '⚠️ ', -- mark annotation startswith @w ,signs this icon as `Warn`
+				['@f'] = '⛏ ', -- mark annotation startswith @f ,signs this icon as `Fix`
+				['@n'] = ' ', -- mark annotation startswith @n ,signs this icon as `Note`
 			},
 			on_attach = function(bufnr)
 				local bm = require 'bookmarks'
 				local map = vim.keymap.set
-				-- Toggle bookmark at current line
-				map('n', 'mm', bm.bookmark_toggle, { desc = 'Toggle bookmark', buffer = bufnr })
-				-- Jump to next/previous bookmark
-				map('n', ']b', bm.bookmark_next, { desc = 'Next bookmark', buffer = bufnr })
-				map('n', '[b', bm.bookmark_prev, { desc = 'Previous bookmark', buffer = bufnr })
-				-- Show all bookmarks in Telescope
-				map('n', '<leader>ma', '<cmd>Telescope bookmarks list<cr>', { desc = 'Show [a]ll bookmarks', buffer = bufnr })
-				map('n', '<leader>ml', '<cmd>Telescope bookmarks list<cr>', { desc = '[L]ist bookmarks', buffer = bufnr })
-				-- Clear all bookmarks in current buffer
-				map('n', '<leader>mc', bm.bookmark_clean, { desc = '[C]lear bookmarks in buffer', buffer = bufnr })
+				map('n', 'mm', bm.bookmark_toggle) -- add or remove bookmark at current line
+				map('n', 'mi', bm.bookmark_ann) -- add or edit mark annotation at current line
+				map('n', 'mc', bm.bookmark_clean) -- clean all marks in local buffer
+				map('n', 'mn', bm.bookmark_next) -- jump to next mark in local buffer
+				map('n', 'mp', bm.bookmark_prev) -- jump to previous mark in local buffer
+				map('n', 'ml', bm.bookmark_list) -- show marked file list in quickfix window
+				map('n', 'mx', bm.bookmark_clear_all) -- removes all bookmarks
 			end,
 		}
 
-		-- Load Telescope extension
-		require('telescope').load_extension 'bookmarks'
+		-- Load Telescope extension for bookmarks
+		require('telescope').load_extension('bookmarks')
 
-		-- Set up global keymaps (in case on_attach doesn't work)
-		vim.keymap.set('n', 'mm', bookmarks.bookmark_toggle, { desc = 'Toggle bookmark' })
-		vim.keymap.set('n', ']b', bookmarks.bookmark_next, { desc = 'Next bookmark' })
-		vim.keymap.set('n', '[b', bookmarks.bookmark_prev, { desc = 'Previous bookmark' })
-		vim.keymap.set('n', '<leader>ma', '<cmd>Telescope bookmarks list<cr>', { desc = 'Show [a]ll bookmarks' })
-		vim.keymap.set('n', '<leader>ml', '<cmd>Telescope bookmarks list<cr>', { desc = '[L]ist bookmarks' })
-		vim.keymap.set('n', '<leader>mc', bookmarks.bookmark_clean, { desc = '[C]lear bookmarks in buffer' })
+		-- Add Telescope bookmark picker keybinding
+		vim.keymap.set('n', '<leader>mb', '<cmd>Telescope bookmarks list<cr>', { desc = 'Show [b]ookmarks (Telescope)' })
 	end,
 }
