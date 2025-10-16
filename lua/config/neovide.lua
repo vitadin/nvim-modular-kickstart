@@ -145,36 +145,39 @@ vim.g.neovide_input_macos_option_key_is_meta = true
 -- Workarounds and Fixes
 -- ============================================================================
 
--- Enable markdown code block syntax highlighting in Neovide
--- Neovide has rendering issues with treesitter markdown, so we use Vim's syntax
+-- Enable markdown code block syntax highlighting for Neovide
+-- Set this globally before any markdown files are loaded
+vim.g.markdown_fenced_languages = {
+	'bash',
+	'c',
+	'cpp',
+	'go',
+	'html',
+	'javascript',
+	'js=javascript',
+	'json',
+	'lua',
+	'python',
+	'sh',
+	'typescript',
+	'vim',
+	'viml=vim',
+}
+
+-- Disable Treesitter for markdown in Neovide (causes rendering issues)
+-- Use Vim's built-in syntax highlighting instead
 vim.api.nvim_create_autocmd({ 'FileType' }, {
 	group = vim.api.nvim_create_augroup('NeovideMarkdownFix', { clear = true }),
 	pattern = { 'markdown' },
 	callback = function()
-		-- Disable treesitter highlighting for this buffer (Neovide compatibility)
+		-- Disable treesitter highlighting for this buffer
 		vim.cmd 'TSBufDisable highlight'
 		-- Enable vim's built-in syntax highlighting
-		vim.cmd 'syntax on'
-		-- Enable markdown code block syntax highlighting
-		-- This allows fenced code blocks (```lang) to be highlighted
-		vim.g.markdown_fenced_languages = {
-			'bash',
-			'c',
-			'cpp',
-			'go',
-			'html',
-			'javascript',
-			'js=javascript',
-			'json',
-			'lua',
-			'python',
-			'sh',
-			'typescript',
-			'vim',
-			'viml=vim',
-		}
+		vim.cmd 'syntax enable'
+		-- Force reload markdown syntax to pick up fenced languages
+		vim.cmd 'setlocal syntax=markdown'
 	end,
-	desc = 'Enable markdown code block highlighting in Neovide',
+	desc = 'Disable Treesitter for markdown in Neovide, use Vim syntax',
 })
 
 -- ============================================================================
