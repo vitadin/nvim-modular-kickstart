@@ -71,13 +71,15 @@ return {
 			},
 		}
 
-		-- Disable automatic compilation on save (manual trigger with <Space>ll)
-		-- Set to 1 to enable automatic compilation
+		-- Engine selection (pdflatex, xelatex, or lualatex)
+		-- Default: pdflatex
+		-- Override per-file with magic comment: %!TEX program = xelatex
+		-- Override per-project with .latexmkrc file
 		vim.g.vimtex_compiler_latexmk_engines = {
-			_ = '-pdf', -- Default to pdflatex
-			-- Uncomment for XeLaTeX or LuaLaTeX:
-			-- _ = '-xelatex',
-			-- _ = '-lualatex',
+			_ = '-pdf', -- pdflatex (default, best compatibility)
+			-- Uncomment one of these to change global default:
+			-- _ = '-xelatex',  -- XeLaTeX (better font support, Unicode)
+			-- _ = '-lualatex', -- LuaLaTeX (Lua scripting, modern)
 		}
 
 		-- Quickfix configuration
@@ -114,6 +116,16 @@ return {
 	--   <Space>le - Show errors in quickfix
 	--   <Space>lt - Open table of contents
 	--   <Space>lk - Stop compilation
+	--
+	-- Using XeLaTeX or LuaLaTeX:
+	--   Option 1: Add magic comment at top of .tex file:
+	--             %!TEX program = xelatex
+	--             %!TEX program = lualatex
+	--   Option 2: Create .latexmkrc in project directory:
+	--             $pdf_mode = 5;  # xelatex
+	--             $pdf_mode = 4;  # lualatex
+	--   Then <Space>ll works as usual with the specified engine!
+	--
 	-- Text object mappings (non-leader):
 	--   dse - Delete surrounding environment
 	--   cse - Change surrounding environment
