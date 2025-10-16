@@ -12,10 +12,7 @@
 return {
 	'crusj/bookmarks.nvim',
 	branch = 'main',
-	dependencies = {
-		'nvim-web-devicons',
-		'nvim-telescope/telescope.nvim',
-	},
+	dependencies = { 'nvim-web-devicons' },
 	config = function()
 		require('bookmarks').setup {
 			save_file = vim.fn.expand '$HOME/.bookmarks', -- bookmarks save file path
@@ -37,11 +34,5 @@ return {
 				map('n', 'mx', bm.bookmark_clear_all) -- removes all bookmarks
 			end,
 		}
-
-		-- Load Telescope extension for bookmarks
-		require('telescope').load_extension('bookmarks')
-
-		-- Add Telescope bookmark picker keybinding
-		vim.keymap.set('n', '<leader>mb', '<cmd>Telescope bookmarks list<cr>', { desc = 'Show [b]ookmarks (Telescope)' })
 	end,
 }
