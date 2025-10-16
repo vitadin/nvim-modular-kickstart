@@ -11,8 +11,22 @@
 -- Implementation: Uses marks a-z for bookmarks
 -- These are session-based and cleared when you close Neovim
 
--- Store active marks
+-- Define highlight group for bookmark sign
+vim.api.nvim_set_hl(0, 'BookmarkSignHL', { fg = '#FFA500', bold = true }) -- Orange color
+
+-- Store active marks with their sign IDs
 local active_marks = {}
+local sign_id_counter = 5000 -- Start from 5000 to avoid conflicts
+
+-- Define a sign for each mark letter (a-z)
+for mark = string.byte('a'), string.byte('z') do
+	local mark_char = string.char(mark)
+	vim.fn.sign_define('BookmarkSign_' .. mark_char, {
+		text = mark_char, -- Show the actual mark letter
+		texthl = 'BookmarkSignHL',
+		numhl = '',
+	})
+end
 
 -- Toggle bookmark at current position
 local function toggle_bookmark()
@@ -21,21 +35,26 @@ local function toggle_bookmark()
 
 	-- Check if there's already a mark on this line
 	local existing_mark = nil
-	for mark = string.byte('a'), string.byte('z') do
-		local mark_char = string.char(mark)
-		local mark_pos = vim.api.nvim_buf_get_mark(buf, mark_char)
+	local existing_mark_data = nil
+	for i, mark_data in ipairs(active_marks) do
+		local mark_pos = vim.api.nvim_buf_get_mark(buf, mark_data.mark)
 		if mark_pos[1] == line then
-			existing_mark = mark_char
+			existing_mark = mark_data.mark
+			existing_mark_data = mark_data
 			break
 		end
 	end
 
 	if existing_mark then
-		-- Remove the mark by setting it to an invalid position
+		-- Remove the sign
+		vim.fn.sign_unplace('BookmarkGroup', { id = existing_mark_data.sign_id, buffer = buf })
+
+		-- Remove the mark
 		vim.cmd('delmarks ' .. existing_mark)
+
 		-- Remove from active marks
-		for i, mark in ipairs(active_marks) do
-			if mark == existing_mark then
+		for i, mark_data in ipairs(active_marks) do
+			if mark_data.mark == existing_mark then
 				table.remove(active_marks, i)
 				break
 			end
@@ -54,8 +73,21 @@ local function toggle_bookmark()
 		end
 
 		if mark_char then
+			-- Set the mark
 			vim.cmd('normal! m' .. mark_char)
-			table.insert(active_marks, mark_char)
+
+			-- Place the sign with the mark letter
+			sign_id_counter = sign_id_counter + 1
+			vim.fn.sign_place(sign_id_counter, 'BookmarkGroup', 'BookmarkSign_' .. mark_char, buf, { lnum = line, priority = 10 })
+
+			-- Store mark data
+			table.insert(active_marks, {
+				mark = mark_char,
+				sign_id = sign_id_counter,
+				buffer = buf,
+				line = line,
+			})
+
 			vim.notify('Bookmark set: ' .. mark_char, vim.log.levels.INFO)
 		else
 			vim.notify('No available bookmark slots (a-z all used)', vim.log.levels.WARN)
@@ -88,31 +120,35 @@ local function list_bookmarks()
 		return
 	end
 
-	vim.cmd('marks ' .. table.concat(active_marks, ''))
+	-- Extract just the mark characters
+	local mark_chars = {}
+	for _, mark_data in ipairs(active_marks) do
+		table.insert(mark_chars, mark_data.mark)
+	end
+
+	vim.cmd('marks ' .. table.concat(mark_chars, ''))
 end
 
 -- Clear bookmarks in current buffer
 local function clear_buffer_bookmarks()
 	local buf = vim.api.nvim_get_current_buf()
 	local marks_to_delete = {}
+	local indices_to_remove = {}
 
-	for _, mark_char in ipairs(active_marks) do
-		local mark_pos = vim.api.nvim_buf_get_mark(buf, mark_char)
-		if mark_pos[1] > 0 then
-			table.insert(marks_to_delete, mark_char)
+	for i, mark_data in ipairs(active_marks) do
+		if mark_data.buffer == buf then
+			table.insert(marks_to_delete, mark_data.mark)
+			table.insert(indices_to_remove, i)
+			-- Remove sign
+			vim.fn.sign_unplace('BookmarkGroup', { id = mark_data.sign_id, buffer = buf })
 		end
 	end
 
 	if #marks_to_delete > 0 then
 		vim.cmd('delmarks ' .. table.concat(marks_to_delete, ''))
-		-- Remove from active_marks
-		for _, mark in ipairs(marks_to_delete) do
-			for i, active_mark in ipairs(active_marks) do
-				if active_mark == mark then
-					table.remove(active_marks, i)
-					break
-				end
-			end
+		-- Remove from active_marks (in reverse order to maintain indices)
+		for i = #indices_to_remove, 1, -1 do
+			table.remove(active_marks, indices_to_remove[i])
 		end
 		vim.notify('Cleared ' .. #marks_to_delete .. ' bookmarks from buffer', vim.log.levels.INFO)
 	else
@@ -123,7 +159,14 @@ end
 -- Clear all bookmarks
 local function clear_all_bookmarks()
 	if #active_marks > 0 then
-		vim.cmd('delmarks ' .. table.concat(active_marks, ''))
+		local marks = {}
+		-- Remove all signs
+		for _, mark_data in ipairs(active_marks) do
+			table.insert(marks, mark_data.mark)
+			vim.fn.sign_unplace('BookmarkGroup', { id = mark_data.sign_id, buffer = mark_data.buffer })
+		end
+
+		vim.cmd('delmarks ' .. table.concat(marks, ''))
 		local count = #active_marks
 		active_marks = {}
 		vim.notify('Cleared ' .. count .. ' bookmarks', vim.log.levels.INFO)
