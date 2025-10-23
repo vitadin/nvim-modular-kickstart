@@ -9,3 +9,6 @@ init.lua.backup
 
 # User configuration (personal settings, not tracked by git)
 lua/user-config.lua
+
+# User's custom plugins (local plugin configurations, not tracked by git)
+lua/custom/

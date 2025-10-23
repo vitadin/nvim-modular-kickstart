@@ -82,12 +82,14 @@ kickstart.nvim/
 │   │   └── servers/            # Individual LSP configs
 │   │       ├── lua_ls.lua      # Lua language server
 │   │       └── clangd.lua      # C/C++ language server
-│   └── plugins/                # Plugin specifications
-│       ├── ui/                 # UI enhancements (colorscheme, statusline)
-│       ├── editor/             # Editor features (telescope, treesitter)
-│       ├── lsp/                # LSP plugin setup
-│       ├── coding/             # Coding tools (completion, formatting)
-│       └── git/                # Git integration
+│   ├── plugins/                # Plugin specifications (tracked by git)
+│   │   ├── ui/                 # UI enhancements (colorscheme, statusline)
+│   │   ├── editor/             # Editor features (telescope, treesitter)
+│   │   ├── lsp/                # LSP plugin setup
+│   │   ├── coding/             # Coding tools (completion, formatting)
+│   │   └── git/                # Git integration
+│   └── custom/                 # Your personal customizations (NOT in git)
+│       └── plugins/            # Local plugin configurations
 ├── Makefile                    # Build automation
 ├── .stylua.toml                # Code formatter config
 ├── .luacheckrc                 # Linter config
@@ -305,6 +307,29 @@ return {
 ```
 
 Lazy.nvim will automatically detect and load it.
+
+### Using Local Plugins (Development/Testing)
+
+To use local plugins during development or testing, create configuration files in `lua/custom/plugins/`:
+
+```lua
+-- lua/custom/plugins/my-local-plugin.lua
+return {
+	dir = '~/test/my-plugin',  -- Path to your local plugin
+	name = 'my-plugin',
+	config = function()
+		require('my-plugin').setup()
+	end,
+}
+```
+
+**Key points:**
+- Files in `lua/custom/` are **NOT tracked by git** (in `.gitignore`)
+- Your plugin code can be anywhere (e.g., `~/test/`, `~/dev/`)
+- The config file just **points to** where the plugin actually is
+- Perfect for plugin development and testing without affecting the repository
+
+See the [Local Plugins Tutorial](docs/tutorial/16-local-plugins.md) for complete details.
 
 ### Modifying Settings
 
