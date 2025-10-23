@@ -80,6 +80,11 @@ skill. No overwhelming 500+ line documents!
 26. [**Temporary Bookmarks**](./15-bookmarks.md) - Session-based markers for quick
     navigation within and across files
 
+### Plugin Development
+
+27. [**Using Local Plugins**](./16-local-plugins.md) - Configure and test local Lua
+    plugins during development
+
 ## Quick Start: Jump to What You Need
 
 ### I want to...
@@ -97,6 +102,7 @@ skill. No overwhelming 500+ line documents!
 - **Write LaTeX documents** → [LaTeX Setup and Usage](./12-latex-setup.md)
 - **Close a buffer without closing others** → [Buffer Management](./13-buffer-management.md)
 - **Jump between doc and code quickly** → [Temporary Bookmarks](./15-bookmarks.md)
+- **Test local plugin development** → [Using Local Plugins](./16-local-plugins.md)
 
 ## Quick Reference
 
