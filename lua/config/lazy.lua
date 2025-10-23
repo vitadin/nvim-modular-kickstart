@@ -31,6 +31,10 @@ require('lazy').setup({
 	{ import = 'plugins.lsp' },
 	{ import = 'plugins.coding' },
 	{ import = 'plugins.git' },
+
+	-- Import user's custom plugins (local plugin development)
+	-- Files in lua/custom/ are git-ignored, perfect for personal plugins
+	{ import = 'custom.plugins' },
 }, {
 	ui = {
 		-- If you are using a Nerd Font: set icons to an empty table which will use the

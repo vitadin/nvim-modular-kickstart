@@ -27,7 +27,9 @@ Use local plugins when you:
 
 1. **Git Ignored:** This directory is in `.gitignore`, so your personal local plugin configurations won't be tracked by git
 2. **Personal Development:** Perfect for testing and development without polluting the main repository
-3. **Auto-loaded:** Lazy.nvim automatically loads all Lua files from this directory
+3. **Auto-loaded:** Lazy.nvim automatically imports from `custom.plugins` (configured in `lua/config/lazy.lua`)
+
+**Note:** Make sure `lua/config/lazy.lua` includes `{ import = 'custom.plugins' }` in the `require('lazy').setup()` call. This is required for local plugins to load.
 
 ### Directory Structure
 
@@ -411,6 +413,18 @@ return {
    ls -la ~/.config/nvim-modular/lua/custom/plugins/
    ```
    Your config file should be here.
+
+6. **CRITICAL: Check if `custom.plugins` is imported:**
+   Open `lua/config/lazy.lua` and verify it includes:
+   ```lua
+   require('lazy').setup({
+     { import = 'plugins.ui' },
+     { import = 'plugins.editor' },
+     -- ... other imports ...
+     { import = 'custom.plugins' },  -- This line MUST be present!
+   }, {
+   ```
+   **If this line is missing, your local plugins won't load at all!**
 
 ### Module Not Found Error
 
